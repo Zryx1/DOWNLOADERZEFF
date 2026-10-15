@@ -350,7 +350,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
 .platform-name { font-size: 14px; font-weight: 600; color: var(--text); }
 .platform-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-/* Full width: tombol terakhir jika jumlah ganjil */
 .platform-grid .platform-btn:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
@@ -777,6 +776,87 @@ footer {
 
 .grad-text { color: var(--muted); font-weight: 600; }
 
+/* ==================== WA CHANNEL ==================== */
+.wa-channel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.wa-channel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.06), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.wa-channel:hover {
+  border-color: rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -16px rgba(37, 211, 102, 0.35);
+}
+
+.wa-channel:hover::before { opacity: 1; }
+
+.wa-channel svg {
+  width: 32px;
+  height: 32px;
+  color: #25d366;
+  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.wa-channel:hover svg {
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.wa-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.wa-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.wa-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.wa-channel::after {
+  content: "→";
+  font-size: 18px;
+  color: var(--dim);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.wa-channel:hover::after {
+  color: #25d366;
+  transform: translateX(4px);
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 560px) {
   body { padding-top: 52px; }
@@ -799,4 +879,9 @@ footer {
 
   .media-head { flex-direction: column; }
   .dl-btn { width: 100%; }
+
+  .wa-channel { padding: 14px 16px; gap: 12px; }
+  .wa-channel svg { width: 28px; height: 28px; }
+  .wa-title { font-size: 13px; }
+  .wa-desc { font-size: 11px; }
 }
