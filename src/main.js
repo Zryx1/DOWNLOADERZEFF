@@ -28,6 +28,7 @@ const PLATFORM_META = {
   youtube:   { label: "YouTube",   placeholder: "https://youtu.be/..." },
   instagram: { label: "Instagram", placeholder: "https://www.instagram.com/reel/..." },
   facebook:  { label: "Facebook",  placeholder: "https://www.facebook.com/share/v/..." },
+  capcut:    { label: "CapCut",    placeholder: "https://www.capcut.com/tv2/..." },
   pinterest: { label: "Pinterest", placeholder: "https://pin.it/..." },
   spotify:   { label: "Spotify",   placeholder: "https://open.spotify.com/track/..." },
 };
@@ -59,7 +60,7 @@ async function checkStatus() {
 checkStatus();
 setInterval(checkStatus, 60_000);
 
-// ==================== STEP 1 — Pilih Platform ====================
+// ==================== STEP 1 ====================
 document.querySelectorAll(".platform-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const p = btn.dataset.platform;
@@ -255,7 +256,8 @@ function buildCard(item, idx) {
   const typeClass = `tag type-${item.type}`;
   tags.innerHTML = `
     <span class="${typeClass}">${typeLabel}</span>
-    ${item.quality ? `<span class="tag">${escapeHtml(item.quality)}</span>` : ""}
+    ${item.isHd ? `<span class="tag hd-tag">HD</span>` : ""}
+    ${item.quality && !item.isHd ? `<span class="tag">${escapeHtml(item.quality)}</span>` : ""}
     ${item.author ? `<span class="tag">${escapeHtml(item.author)}</span>` : ""}
   `;
   titleWrap.appendChild(tags);
