@@ -20,7 +20,7 @@ body {
   padding: 40px 16px;
 }
 
-header { text-align: center; margin-bottom: 32px; }
+header { text-align: center; margin-bottom: 40px; }
 h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.02em; }
 header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
 
@@ -31,102 +31,8 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
-  animation: fadeIn 0.3s ease;
 }
 
-.hidden { display: none !important; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.step-title {
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-
-/* ==================== PLATFORM GRID ==================== */
-.platform-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.platform-btn {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px 16px;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text);
-  font-family: inherit;
-}
-
-.platform-btn:hover {
-  border-color: var(--accent);
-  background: rgba(168, 85, 247, 0.05);
-}
-
-.platform-btn .platform-name {
-  display: block;
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.platform-btn .platform-desc {
-  display: block;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* Biar 5 tombol rapi — tombol terakhir full width */
-.platform-grid .platform-btn:nth-child(5) {
-  grid-column: 1 / -1;
-}
-
-/* ==================== STEP HEADER ==================== */
-.step-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.back-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-
-.back-btn:hover {
-  color: var(--text);
-  border-color: #404040;
-}
-
-.step-badge {
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: rgba(168, 85, 247, 0.15);
-  color: #d8b4fe;
-  font-weight: 500;
-}
-
-/* ==================== FORM ==================== */
 label {
   display: block;
   font-size: 11px;
@@ -146,12 +52,12 @@ input[type="text"] {
   font-size: 14px;
   outline: none;
   transition: border 0.2s;
-  font-family: inherit;
 }
 
 input[type="text"]:focus { border-color: var(--accent); }
 
 .yt-options { margin-top: 20px; }
+.hidden { display: none; }
 
 .row {
   display: grid;
@@ -171,7 +77,6 @@ input[type="text"]:focus { border-color: var(--accent); }
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: inherit;
 }
 
 .btns button.active {
@@ -192,7 +97,6 @@ input[type="text"]:focus { border-color: var(--accent); }
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
-  font-family: inherit;
 }
 
 .submit:hover:not(:disabled) { background: #9333ea; }
@@ -203,7 +107,6 @@ input[type="text"]:focus { border-color: var(--accent); }
   cursor: not-allowed;
 }
 
-/* ==================== RESULT ==================== */
 .result { width: 100%; max-width: 640px; margin-top: 24px; }
 
 .loading {
@@ -282,7 +185,6 @@ input[type="text"]:focus { border-color: var(--accent); }
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s;
-  font-family: inherit;
 }
 
 .item .dl:hover { background: #9333ea; }
@@ -304,6 +206,4 @@ footer {
 @media (max-width: 500px) {
   h1 { font-size: 32px; }
   .row { grid-template-columns: 1fr; }
-  .platform-grid { grid-template-columns: 1fr; }
-  .platform-grid .platform-btn:nth-child(5) { grid-column: auto; }
 }
