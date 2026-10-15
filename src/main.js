@@ -1,16 +1,65 @@
 import "./style.css";
 
+// ==================== STATE ====================
+let platform = null;
+let format = "mp4";
+let resolusi = "720";
+
 // ==================== DOM ====================
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+const result = document.getElementById("result");
 const urlInput = document.getElementById("url");
 const submitBtn = document.getElementById("submitBtn");
 const ytOptions = document.getElementById("ytOptions");
 const resWrapper = document.getElementById("resWrapper");
-const result = document.getElementById("result");
+const platformBadge = document.getElementById("platformBadge");
+const step2Title = document.getElementById("step2Title");
+const backBtn = document.getElementById("backBtn");
 
-let format = "mp4";
-let resolusi = "720";
+// ==================== PLATFORM META ====================
+const PLATFORM_META = {
+  tiktok:    { label: "TikTok",    placeholder: "https://vt.tiktok.com/..." },
+  youtube:   { label: "YouTube",   placeholder: "https://youtu.be/..." },
+  instagram: { label: "Instagram", placeholder: "https://www.instagram.com/reel/..." },
+  pinterest: { label: "Pinterest", placeholder: "https://pin.it/..." },
+  spotify:   { label: "Spotify",   placeholder: "https://open.spotify.com/track/..." },
+};
 
-// ==================== BUTTON HELPERS ====================
+// ==================== STEP 1 — Pilih Platform ====================
+document.querySelectorAll(".platform-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const p = btn.dataset.platform;
+    if (!p) return;
+
+    platform = p;
+    const meta = PLATFORM_META[p];
+
+    platformBadge.textContent = meta.label;
+    step2Title.textContent = `Masukkan Link ${meta.label}`;
+    urlInput.placeholder = meta.placeholder;
+    urlInput.value = "";
+
+    ytOptions.classList.toggle("hidden", p !== "youtube");
+    submitBtn.disabled = true;
+    result.innerHTML = "";
+
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+    urlInput.focus();
+  });
+});
+
+// ==================== BACK ====================
+backBtn.addEventListener("click", () => {
+  platform = null;
+  urlInput.value = "";
+  step2.classList.add("hidden");
+  step1.classList.remove("hidden");
+  result.innerHTML = "";
+});
+
+// ==================== FORMAT & RESOLUSI ====================
 function setupButtons(containerId, onSelect) {
   document.querySelectorAll(`#${containerId} button`).forEach((b) => {
     b.addEventListener("click", () => {
@@ -32,18 +81,15 @@ setupButtons("resBtns", (val) => {
   resolusi = val;
 });
 
-// ==================== INPUT DETECT ====================
+// ==================== INPUT ENABLE ====================
 urlInput.addEventListener("input", () => {
-  const u = urlInput.value.toLowerCase();
-  const isYT = u.includes("youtu.be") || u.includes("youtube.com");
-  ytOptions.classList.toggle("hidden", !isYT);
   submitBtn.disabled = !urlInput.value.trim();
 });
 
 // ==================== SUBMIT ====================
 submitBtn.addEventListener("click", async () => {
   const url = urlInput.value.trim();
-  if (!url) return;
+  if (!url || !platform) return;
 
   submitBtn.disabled = true;
   submitBtn.textContent = "Memproses...";
@@ -64,7 +110,7 @@ submitBtn.addEventListener("click", async () => {
     const data = await res.json();
     render(data);
   } catch (e) {
-    result.innerHTML = `<div class="error"><strong>Gagal:</strong> ${e.message}</div>`;
+    result.innerHTML = `<div class="error"><strong>Gagal:</strong> ${escapeHtml(e.message)}</div>`;
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "Ambil Media";
@@ -105,9 +151,9 @@ function render(data) {
     })
     .join("");
 
-  result.innerHTML = html + `<p class="hint">File diunduh langsung dari server sumber</p>`;
+  result.innerHTML =
+    html + `<p class="hint">File diunduh langsung dari server sumber</p>`;
 
-  // Attach event ke tombol unduh
   result.querySelectorAll(".dl").forEach((btn) => {
     btn.addEventListener("click", () => {
       const url = btn.dataset.url;
