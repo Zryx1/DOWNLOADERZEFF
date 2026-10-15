@@ -7,85 +7,163 @@
   <meta name="description" content="Download video & audio dari berbagai platform">
 </head>
 <body>
-  <header>
-    <h1>Vortex</h1>
-    <p>Download video & audio dari berbagai platform</p>
-  </header>
 
-  <!-- STEP 1: Pilih Platform -->
-  <section id="step1" class="card">
-    <h2 class="step-title">Pilih Platform</h2>
-    <div class="platform-grid">
-      <button class="platform-btn" data-platform="tiktok">
-        <span class="platform-name">TikTok</span>
-        <span class="platform-desc">Video & audio</span>
-      </button>
-      <button class="platform-btn" data-platform="youtube">
-        <span class="platform-name">YouTube</span>
-        <span class="platform-desc">MP4 & MP3</span>
-      </button>
-      <button class="platform-btn" data-platform="instagram">
-        <span class="platform-name">Instagram</span>
-        <span class="platform-desc">Foto & video</span>
-      </button>
-      <button class="platform-btn" data-platform="pinterest">
-        <span class="platform-name">Pinterest</span>
-        <span class="platform-desc">Video & gambar</span>
-      </button>
-      <button class="platform-btn" data-platform="spotify">
-        <span class="platform-name">Spotify</span>
-        <span class="platform-desc">Audio track</span>
-      </button>
-    </div>
-  </section>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 
-  <!-- STEP 2: Input URL -->
-  <section id="step2" class="card hidden">
-    <div class="step-header">
-      <button class="back-btn" id="backBtn">&larr; Kembali</button>
-      <span class="step-badge" id="platformBadge">TikTok</span>
-    </div>
+  <div class="container">
 
-    <h2 class="step-title" id="step2Title">Masukkan Link TikTok</h2>
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </div>
+      <h1>Vortex</h1>
+      <p>Download video & audio dari berbagai platform</p>
+    </header>
 
-    <label for="url">Link Media</label>
-    <input
-      type="text"
-      id="url"
-      placeholder="https://..."
-      autocomplete="off"
-      spellcheck="false"
-    >
-
-    <div id="ytOptions" class="yt-options hidden">
-      <div class="row">
-        <div>
-          <label>Format</label>
-          <div class="btns" id="formatBtns">
-            <button type="button" data-val="mp4" class="active">MP4</button>
-            <button type="button" data-val="mp3">MP3</button>
+    <!-- STEP 1 -->
+    <section id="step1" class="card">
+      <h2 class="step-title">
+        <span class="step-num">1</span>
+        Pilih Platform
+      </h2>
+      <div class="platform-grid">
+        <button class="platform-btn" data-platform="tiktok">
+          <div class="platform-icon tiktok">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
           </div>
-        </div>
-        <div id="resWrapper">
-          <label>Resolusi</label>
-          <div class="btns" id="resBtns">
-            <button type="button" data-val="360">360p</button>
-            <button type="button" data-val="480">480p</button>
-            <button type="button" data-val="720" class="active">720p</button>
-            <button type="button" data-val="1080">1080p</button>
+          <div class="platform-info">
+            <span class="platform-name">TikTok</span>
+            <span class="platform-desc">Video & audio</span>
+          </div>
+        </button>
+
+        <button class="platform-btn" data-platform="youtube">
+          <div class="platform-icon youtube">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </div>
+          <div class="platform-info">
+            <span class="platform-name">YouTube</span>
+            <span class="platform-desc">MP4 & MP3</span>
+          </div>
+        </button>
+
+        <button class="platform-btn" data-platform="instagram">
+          <div class="platform-icon instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+            </svg>
+          </div>
+          <div class="platform-info">
+            <span class="platform-name">Instagram</span>
+            <span class="platform-desc">Foto & video</span>
+          </div>
+        </button>
+
+        <button class="platform-btn" data-platform="pinterest">
+          <div class="platform-icon pinterest">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <div class="platform-info">
+            <span class="platform-name">Pinterest</span>
+            <span class="platform-desc">Video & gambar</span>
+          </div>
+        </button>
+
+        <button class="platform-btn" data-platform="spotify">
+          <div class="platform-icon spotify">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+          </div>
+          <div class="platform-info">
+            <span class="platform-name">Spotify</span>
+            <span class="platform-desc">Audio track</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section id="step2" class="card hidden">
+      <div class="step-header">
+        <button class="back-btn" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Kembali
+        </button>
+        <span class="step-badge" id="platformBadge">TikTok</span>
+      </div>
+
+      <h2 class="step-title">
+        <span class="step-num">2</span>
+        <span id="step2Title">Masukkan Link</span>
+      </h2>
+
+      <label for="url">Link Media</label>
+      <div class="input-wrap">
+        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+        <input
+          type="text"
+          id="url"
+          placeholder="https://..."
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+
+      <div id="ytOptions" class="yt-options hidden">
+        <div class="row">
+          <div>
+            <label>Format</label>
+            <div class="btns" id="formatBtns">
+              <button type="button" data-val="mp4" class="active">MP4</button>
+              <button type="button" data-val="mp3">MP3</button>
+            </div>
+          </div>
+          <div id="resWrapper">
+            <label>Resolusi</label>
+            <div class="btns" id="resBtns">
+              <button type="button" data-val="360">360p</button>
+              <button type="button" data-val="480">480p</button>
+              <button type="button" data-val="720" class="active">720p</button>
+              <button type="button" data-val="1080">1080p</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <button type="button" id="submitBtn" class="submit" disabled>
-      Ambil Media
-    </button>
-  </section>
+      <button type="button" id="submitBtn" class="submit" disabled>
+        <span>Ambil Media</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </section>
 
-  <section id="result" class="result"></section>
+    <section id="result" class="result"></section>
 
-  <footer>Vortex &middot; Powered by NexRay API</footer>
+    <footer>
+      <p>Vortex &middot; Powered by <span class="grad-text">NexRay API</span></p>
+    </footer>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
