@@ -12,7 +12,42 @@
     <p>Download video & audio dari berbagai platform</p>
   </header>
 
-  <main class="card">
+  <!-- STEP 1: Pilih Platform -->
+  <section id="step1" class="card">
+    <h2 class="step-title">Pilih Platform</h2>
+    <div class="platform-grid">
+      <button class="platform-btn" data-platform="tiktok">
+        <span class="platform-name">TikTok</span>
+        <span class="platform-desc">Video & audio</span>
+      </button>
+      <button class="platform-btn" data-platform="youtube">
+        <span class="platform-name">YouTube</span>
+        <span class="platform-desc">MP4 & MP3</span>
+      </button>
+      <button class="platform-btn" data-platform="instagram">
+        <span class="platform-name">Instagram</span>
+        <span class="platform-desc">Foto & video</span>
+      </button>
+      <button class="platform-btn" data-platform="pinterest">
+        <span class="platform-name">Pinterest</span>
+        <span class="platform-desc">Video & gambar</span>
+      </button>
+      <button class="platform-btn" data-platform="spotify">
+        <span class="platform-name">Spotify</span>
+        <span class="platform-desc">Audio track</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- STEP 2: Input URL -->
+  <section id="step2" class="card hidden">
+    <div class="step-header">
+      <button class="back-btn" id="backBtn">&larr; Kembali</button>
+      <span class="step-badge" id="platformBadge">TikTok</span>
+    </div>
+
+    <h2 class="step-title" id="step2Title">Masukkan Link TikTok</h2>
+
     <label for="url">Link Media</label>
     <input
       type="text"
@@ -46,7 +81,7 @@
     <button type="button" id="submitBtn" class="submit" disabled>
       Ambil Media
     </button>
-  </main>
+  </section>
 
   <section id="result" class="result"></section>
 
