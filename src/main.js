@@ -107,7 +107,20 @@ submitBtn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, format, resolusi }),
     });
-    const data = await res.json();
+
+    // Baca raw text dulu
+    const raw = await res.text();
+
+    // Coba parse JSON
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error(
+        `Server error (${res.status}): ${raw.slice(0, 200)}`
+      );
+    }
+
     render(data);
   } catch (e) {
     result.innerHTML = `<div class="error"><strong>Gagal:</strong> ${escapeHtml(e.message)}</div>`;
