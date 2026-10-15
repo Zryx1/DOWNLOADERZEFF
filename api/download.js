@@ -7,6 +7,7 @@ function detectPlatform(url) {
   if (u.includes("youtu.be") || u.includes("youtube.com")) return "youtube";
   if (u.includes("instagram.com")) return "instagram";
   if (u.includes("facebook.com") || u.includes("fb.watch") || u.includes("fb.com")) return "facebook";
+  if (u.includes("capcut.com")) return "capcut";
   if (u.includes("pinterest.") || u.includes("pin.it")) return "pinterest";
   if (u.includes("spotify.com")) return "spotify";
   return null;
@@ -34,24 +35,31 @@ function normalize(platform, data, extra = {}) {
   if (!r) throw new Error("Response kosong dari server");
 
   switch (platform) {
-    case "tiktok":
-      return [
-        {
+    case "tiktok": {
+      // TikTok: pakai `data` = versi no-watermark (HD).
+      // `size_nowm_hd` & `size_nowm` sama → `data` sudah yang tertinggi.
+      const items = [];
+      if (r.data) {
+        items.push({
           type: "video",
           url: r.data,
           thumbnail: r.cover,
           title: r.title,
           author: r.author?.nickname,
-        },
-        ...(r.music_info?.url
-          ? [{
-              type: "audio",
-              url: r.music_info.url,
-              title: r.title,
-              author: r.author?.nickname,
-            }]
-          : []),
-      ];
+          quality: "HD",
+          isHd: true,
+        });
+      }
+      if (r.music_info?.url) {
+        items.push({
+          type: "audio",
+          url: r.music_info.url,
+          title: r.title,
+          author: r.author?.nickname,
+        });
+      }
+      return items;
+    }
 
     case "youtube":
       if (extra.format === "mp3") {
@@ -63,6 +71,7 @@ function normalize(platform, data, extra = {}) {
         title: r.title,
         author: r.author,
         quality: r.quality || extra.resolusi,
+        isHd: (r.quality || extra.resolusi) === "1080" || (r.quality || "").includes("1080"),
       }];
 
     case "instagram": {
@@ -75,6 +84,7 @@ function normalize(platform, data, extra = {}) {
     }
 
     case "facebook": {
+      // Facebook: prioritaskan HD, tampilkan SD sebagai opsi kedua.
       const items = [];
       if (r.video_hd) {
         items.push({
@@ -83,6 +93,7 @@ function normalize(platform, data, extra = {}) {
           title: r.title || "Facebook Video",
           quality: "HD",
           author: "Facebook",
+          isHd: true,
         });
       }
       if (r.video_sd) {
@@ -104,6 +115,15 @@ function normalize(platform, data, extra = {}) {
       }
       return items;
     }
+
+    case "capcut":
+      return [{
+        type: "video",
+        url: r.url,
+        thumbnail: r.thumbnail,
+        title: r.title || "CapCut Video",
+        author: r.author?.name,
+      }];
 
     case "pinterest":
       return [{
@@ -168,6 +188,9 @@ export default async function handler(req, res) {
         break;
       case "facebook":
         data = await fetchNexray("/downloader/facebook", { url });
+        break;
+      case "capcut":
+        data = await fetchNexray("/downloader/v1/capcut", { url });
         break;
       case "pinterest":
         data = await fetchNexray("/downloader/pinterest", { url });
