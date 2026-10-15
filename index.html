@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vortex — Media Downloader</title>
+  <meta name="description" content="Download video & audio dari berbagai platform">
+</head>
+<body>
+  <header>
+    <h1>Vortex</h1>
+    <p>Download video & audio dari berbagai platform</p>
+  </header>
+
+  <main class="card">
+    <label for="url">Link Media</label>
+    <input
+      type="text"
+      id="url"
+      placeholder="https://..."
+      autocomplete="off"
+      spellcheck="false"
+    >
+
+    <div id="ytOptions" class="yt-options hidden">
+      <div class="row">
+        <div>
+          <label>Format</label>
+          <div class="btns" id="formatBtns">
+            <button type="button" data-val="mp4" class="active">MP4</button>
+            <button type="button" data-val="mp3">MP3</button>
+          </div>
+        </div>
+        <div id="resWrapper">
+          <label>Resolusi</label>
+          <div class="btns" id="resBtns">
+            <button type="button" data-val="360">360p</button>
+            <button type="button" data-val="480">480p</button>
+            <button type="button" data-val="720" class="active">720p</button>
+            <button type="button" data-val="1080">1080p</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="submitBtn" class="submit" disabled>
+      Ambil Media
+    </button>
+  </main>
+
+  <section id="result" class="result"></section>
+
+  <footer>Vortex &middot; Powered by NexRay API</footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
