@@ -27,6 +27,7 @@ const PLATFORM_META = {
   tiktok:    { label: "TikTok",    placeholder: "https://vt.tiktok.com/..." },
   youtube:   { label: "YouTube",   placeholder: "https://youtu.be/..." },
   instagram: { label: "Instagram", placeholder: "https://www.instagram.com/reel/..." },
+  facebook:  { label: "Facebook",  placeholder: "https://www.facebook.com/share/v/..." },
   pinterest: { label: "Pinterest", placeholder: "https://pin.it/..." },
   spotify:   { label: "Spotify",   placeholder: "https://open.spotify.com/track/..." },
 };
@@ -42,7 +43,6 @@ async function checkStatus() {
     statusDot.classList.add("online");
     statusText.textContent = "Online";
 
-    // Update quota bar
     if (data.quota) {
       const pct = Math.min(100, data.quota.percent || 0);
       quotaFill.style.width = pct + "%";
@@ -56,7 +56,6 @@ async function checkStatus() {
   }
 }
 
-// Cek setiap 60 detik
 checkStatus();
 setInterval(checkStatus, 60_000);
 
@@ -128,7 +127,7 @@ submitBtn.addEventListener("click", async () => {
   result.innerHTML = `
     <div class="loading">
       <div class="spinner"></div>
-      <p style="margin-top:16px;color:#8a8a94;font-size:14px;">
+      <p style="margin-top:16px;color:#8a8a8a;font-size:13px;">
         Mengambil data dari server...
       </p>
     </div>`;
@@ -178,6 +177,10 @@ function render(data) {
 
   const hint = document.createElement("p");
   hint.className = "hint";
+  hint.style.textAlign = "center";
+  hint.style.fontSize = "11px";
+  hint.style.color = "#525252";
+  hint.style.padding = "8px 0";
   hint.textContent = "File diunduh langsung dari server sumber";
   result.appendChild(hint);
 }
@@ -187,7 +190,6 @@ function buildCard(item, idx) {
   const card = document.createElement("div");
   card.className = "media-card";
 
-  // ---- Preview ----
   const preview = document.createElement("div");
   preview.className = "preview-wrap";
 
@@ -199,7 +201,6 @@ function buildCard(item, idx) {
     v.playsInline = true;
     if (item.thumbnail) v.poster = item.thumbnail;
     v.addEventListener("error", () => {
-      // Kalau video gagal load (CORS), ganti dengan thumbnail
       if (item.thumbnail) {
         preview.innerHTML = `<img src="${item.thumbnail}" alt="">`;
       }
@@ -227,12 +228,11 @@ function buildCard(item, idx) {
     img.loading = "lazy";
     preview.appendChild(img);
   } else {
-    preview.innerHTML = `<div style="padding:40px;color:#52525b;font-size:13px;">Preview tidak tersedia</div>`;
+    preview.innerHTML = `<div style="padding:40px;color:#525252;font-size:13px;">Preview tidak tersedia</div>`;
   }
 
   card.appendChild(preview);
 
-  // ---- Info & Button ----
   const info = document.createElement("div");
   info.className = "media-info";
 
@@ -259,10 +259,8 @@ function buildCard(item, idx) {
     ${item.author ? `<span class="tag">${escapeHtml(item.author)}</span>` : ""}
   `;
   titleWrap.appendChild(tags);
-
   head.appendChild(titleWrap);
 
-  // ---- Download Button ----
   const btn = document.createElement("button");
   btn.className = "dl-btn";
   btn.innerHTML = `
@@ -276,7 +274,6 @@ function buildCard(item, idx) {
   head.appendChild(btn);
   info.appendChild(head);
 
-  // ---- Progress Bar ----
   const prog = document.createElement("div");
   prog.className = "dl-progress";
   prog.innerHTML = `
@@ -291,7 +288,6 @@ function buildCard(item, idx) {
   info.appendChild(prog);
   card.appendChild(info);
 
-  // ---- Download Handler ----
   const fill = prog.querySelector(".progress-fill");
   const status = prog.querySelector(".prog-status");
   const percent = prog.querySelector(".prog-percent");
@@ -316,9 +312,7 @@ async function downloadItem(item, btn, prog, fill, status, percent) {
   percent.textContent = "0%";
 
   try {
-    // Stream via edge proxy
     const proxyUrl = `/api/proxy?url=${encodeURIComponent(item.url)}&filename=${encodeURIComponent(filename)}`;
-
     const res = await fetch(proxyUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -342,7 +336,6 @@ async function downloadItem(item, btn, prog, fill, status, percent) {
       status.textContent = `${formatBytes(received)}${total > 0 ? " / " + formatBytes(total) : ""}`;
     }
 
-    // Save blob
     const blob = new Blob(chunks);
     const blobUrl = URL.createObjectURL(blob);
 
@@ -366,7 +359,6 @@ async function downloadItem(item, btn, prog, fill, status, percent) {
       </svg>
       <span>Selesai</span>`;
 
-    // Update quota (local estimate)
     bumpLocalUsage(received);
   } catch (err) {
     fill.classList.add("fail");
@@ -419,7 +411,6 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
-// ==================== LOCAL USAGE ====================
 function bumpLocalUsage(bytes) {
   try {
     const key = "vortex_usage";
