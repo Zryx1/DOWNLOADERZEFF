@@ -6,6 +6,7 @@ function detectPlatform(url) {
   if (u.includes("tiktok.com")) return "tiktok";
   if (u.includes("youtu.be") || u.includes("youtube.com")) return "youtube";
   if (u.includes("instagram.com")) return "instagram";
+  if (u.includes("facebook.com") || u.includes("fb.watch") || u.includes("fb.com")) return "facebook";
   if (u.includes("pinterest.") || u.includes("pin.it")) return "pinterest";
   if (u.includes("spotify.com")) return "spotify";
   return null;
@@ -73,6 +74,37 @@ function normalize(platform, data, extra = {}) {
       }));
     }
 
+    case "facebook": {
+      const items = [];
+      if (r.video_hd) {
+        items.push({
+          type: "video",
+          url: r.video_hd,
+          title: r.title || "Facebook Video",
+          quality: "HD",
+          author: "Facebook",
+        });
+      }
+      if (r.video_sd) {
+        items.push({
+          type: "video",
+          url: r.video_sd,
+          title: r.title || "Facebook Video",
+          quality: "SD",
+          author: "Facebook",
+        });
+      }
+      if (r.audio) {
+        items.push({
+          type: "audio",
+          url: r.audio,
+          title: r.title || "Facebook Audio",
+          author: "Facebook",
+        });
+      }
+      return items;
+    }
+
     case "pinterest":
       return [{
         type: r.video ? "video" : "image",
@@ -133,6 +165,9 @@ export default async function handler(req, res) {
         break;
       case "instagram":
         data = await fetchNexray("/downloader/instagram", { url });
+        break;
+      case "facebook":
+        data = await fetchNexray("/downloader/facebook", { url });
         break;
       case "pinterest":
         data = await fetchNexray("/downloader/pinterest", { url });
