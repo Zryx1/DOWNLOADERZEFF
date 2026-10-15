@@ -10,8 +10,6 @@
   --text: #f5f5f5;
   --muted: #8a8a8a;
   --dim: #525252;
-  --green: #d4d4d4;
-  --red: #a3a3a3;
 }
 
 html { scroll-behavior: smooth; }
@@ -28,7 +26,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ==================== GRAIN TEXTURE ==================== */
+/* ==================== GRAIN ==================== */
 .grain {
   position: fixed;
   inset: 0;
@@ -41,9 +39,7 @@ body {
 /* ==================== TOP BAR ==================== */
 .top-bar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 56px;
   padding: 0 20px;
   background: rgba(10, 10, 10, 0.85);
@@ -71,17 +67,9 @@ body {
   letter-spacing: -0.01em;
 }
 
-.brand-mini svg {
-  width: 18px;
-  height: 18px;
-  color: var(--text);
-}
+.brand-mini svg { width: 18px; height: 18px; color: var(--text); }
 
-.top-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.top-right { display: flex; align-items: center; gap: 10px; }
 
 .status-pill {
   display: flex;
@@ -94,12 +82,10 @@ body {
   font-size: 12px;
   font-weight: 500;
   color: var(--muted);
-  transition: all 0.3s;
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--dim);
   flex-shrink: 0;
@@ -112,9 +98,7 @@ body {
   animation: pulseDot 2s infinite;
 }
 
-.status-dot.offline {
-  background: #525252;
-}
+.status-dot.offline { background: #525252; }
 
 @keyframes pulseDot {
   0% { box-shadow: 0 0 0 0 rgba(229, 229, 229, 0.5); }
@@ -138,8 +122,7 @@ body {
 .quota-label { font-weight: 600; color: var(--muted); }
 
 .mini-bar {
-  width: 56px;
-  height: 4px;
+  width: 56px; height: 4px;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 2px;
   overflow: hidden;
@@ -177,8 +160,7 @@ header {
 }
 
 .logo {
-  width: 60px;
-  height: 60px;
+  width: 60px; height: 60px;
   margin: 0 auto 20px;
   background: var(--text);
   border-radius: 18px;
@@ -202,7 +184,6 @@ h1 {
   font-size: 42px;
   font-weight: 800;
   letter-spacing: -0.035em;
-  color: var(--text);
   background: linear-gradient(180deg, #ffffff 0%, #a3a3a3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -253,8 +234,7 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
 }
 
 .step-num {
-  width: 22px;
-  height: 22px;
+  width: 22px; height: 22px;
   border-radius: 6px;
   background: var(--text);
   display: inline-flex;
@@ -263,6 +243,34 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   font-size: 11px;
   color: var(--bg);
   font-weight: 700;
+}
+
+/* ==================== CATEGORY GROUP ==================== */
+.category-group {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.category-group:last-child { margin-bottom: 0; }
+
+.category-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.category-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
 }
 
 /* ==================== PLATFORM GRID ==================== */
@@ -307,15 +315,11 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
 }
 
 .platform-btn:hover::after { opacity: 1; }
-
-.platform-btn:active {
-  transform: translateY(0) scale(0.99);
-}
+.platform-btn:active { transform: translateY(0) scale(0.99); }
 
 .platform-icon {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 11px;
   display: flex;
   align-items: center;
@@ -346,8 +350,10 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
 .platform-name { font-size: 14px; font-weight: 600; color: var(--text); }
 .platform-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-/* Tombol terakhir full width */
-.platform-grid .platform-btn:last-child { grid-column: 1 / -1; }
+/* Full width: tombol terakhir jika jumlah ganjil */
+.platform-grid .platform-btn:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
 
 /* ==================== STEP HEADER ==================== */
 .step-header {
@@ -355,7 +361,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  position: relative;
 }
 
 .back-btn {
@@ -404,7 +409,6 @@ label {
   color: var(--muted);
   margin-bottom: 8px;
   font-weight: 600;
-  position: relative;
 }
 
 .input-wrap { position: relative; display: flex; align-items: center; }
@@ -412,8 +416,7 @@ label {
 .input-icon {
   position: absolute;
   left: 16px;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   color: var(--dim);
   pointer-events: none;
   transition: color 0.25s;
@@ -468,10 +471,7 @@ input[type="text"]:focus {
   font-family: inherit;
 }
 
-.btns button:hover {
-  color: var(--text);
-  border-color: var(--border-hover);
-}
+.btns button:hover { color: var(--text); border-color: var(--border-hover); }
 
 .btns button.active {
   background: var(--text);
@@ -504,21 +504,11 @@ input[type="text"]:focus {
 
 .submit svg { width: 16px; height: 16px; transition: transform 0.25s; }
 
-.submit::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.08));
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
 .submit:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 12px 32px -10px rgba(255, 255, 255, 0.3);
 }
 
-.submit:hover:not(:disabled)::before { opacity: 1; }
 .submit:hover:not(:disabled) svg { transform: translateX(3px); }
 .submit:active:not(:disabled) { transform: translateY(0) scale(0.99); }
 
@@ -547,8 +537,7 @@ input[type="text"]:focus {
 }
 
 .spinner {
-  width: 28px;
-  height: 28px;
+  width: 28px; height: 28px;
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-top-color: var(--text);
   border-radius: 50%;
@@ -586,7 +575,6 @@ input[type="text"]:focus {
   box-shadow: 0 20px 50px -20px rgba(255, 255, 255, 0.08);
 }
 
-/* Preview */
 .preview-wrap {
   position: relative;
   width: 100%;
@@ -616,8 +604,7 @@ input[type="text"]:focus {
 }
 
 .preview-wrap.audio .audio-icon {
-  width: 48px;
-  height: 48px;
+  width: 48px; height: 48px;
   border-radius: 14px;
   background: #1a1a1a;
   border: 1px solid var(--border);
@@ -636,7 +623,6 @@ input[type="text"]:focus {
   filter: grayscale(1) contrast(1.1);
 }
 
-/* Info */
 .media-info {
   padding: 16px 18px;
   display: flex;
@@ -686,7 +672,13 @@ input[type="text"]:focus {
 .tag.type-audio { background: rgba(255, 255, 255, 0.06); color: var(--muted); }
 .tag.type-image { background: rgba(255, 255, 255, 0.06); color: var(--muted); }
 
-/* Download Button */
+.tag.hd-tag {
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
 .dl-btn {
   display: inline-flex;
   align-items: center;
@@ -721,11 +713,8 @@ input[type="text"]:focus {
   cursor: not-allowed;
 }
 
-.dl-btn.done {
-  background: #e5e5e5;
-}
+.dl-btn.done { background: #e5e5e5; }
 
-/* Progress */
 .dl-progress {
   display: none;
   flex-direction: column;
@@ -757,12 +746,7 @@ input[type="text"]:focus {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 0, 0, 0.25),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.25), transparent);
   animation: shimmer 1.4s infinite;
 }
 
@@ -771,14 +755,9 @@ input[type="text"]:focus {
   100% { transform: translateX(100%); }
 }
 
-.progress-fill.done {
-  background: #e5e5e5;
-}
+.progress-fill.done { background: #e5e5e5; }
 .progress-fill.done::after { animation: none; }
-
-.progress-fill.fail {
-  background: #525252;
-}
+.progress-fill.fail { background: #525252; }
 
 .progress-info {
   display: flex;
@@ -796,10 +775,7 @@ footer {
   text-align: center;
 }
 
-.grad-text {
-  color: var(--muted);
-  font-weight: 600;
-}
+.grad-text { color: var(--muted); font-weight: 600; }
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 560px) {
@@ -819,7 +795,7 @@ footer {
 
   .row { grid-template-columns: 1fr; gap: 14px; }
   .platform-grid { grid-template-columns: 1fr; }
-  .platform-grid .platform-btn:last-child { grid-column: auto; }
+  .platform-grid .platform-btn:last-child:nth-child(odd) { grid-column: auto; }
 
   .media-head { flex-direction: column; }
   .dl-btn { width: 100%; }
