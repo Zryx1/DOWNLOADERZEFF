@@ -108,10 +108,8 @@ submitBtn.addEventListener("click", async () => {
       body: JSON.stringify({ url, format, resolusi }),
     });
 
-    // Baca raw text dulu
     const raw = await res.text();
 
-    // Coba parse JSON
     let data;
     try {
       data = JSON.parse(raw);
