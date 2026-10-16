@@ -1,8 +1,11 @@
 import "./style.css";
 
-// ==================== SPLASH SCREEN ====================
+// ==================== ENTRY GATE + SPLASH + AUDIO ====================
 (function () {
   const SPLASH_DURATION = 15000;
+
+  const entryGate = document.getElementById("entryGate");
+  const entryBtn = document.getElementById("entryBtn");
   const splash = document.getElementById("splash");
   const splashSkip = document.getElementById("splashSkip");
   const splashLogo = document.querySelector(".splash-logo");
@@ -11,15 +14,15 @@ import "./style.css";
   const splashBarFill = document.getElementById("splashBarFill");
   const splashStatus = document.getElementById("splashStatus");
   const splashPath = document.getElementById("splashPath");
+  const splashAudio = document.getElementById("splashAudio");
 
-  if (!splash) return;
-
-  document.body.classList.add("splash-active");
+  if (!entryGate || !splash) return;
 
   let finished = false;
   let rafId = null;
   let startTime = null;
 
+  // ---- STATUS ----
   const STATUS_STEPS = [
     { at: 0,  text: "Menyiapkan..." },
     { at: 15, text: "Memuat platform..." },
@@ -48,6 +51,7 @@ import "./style.css";
     }
   }
 
+  // ---- PROGRESS ----
   function tick(now) {
     if (finished) return;
     if (startTime === null) startTime = now;
@@ -59,16 +63,29 @@ import "./style.css";
     updateStatus(pct);
 
     if (pct >= 100) {
-      finish();
+      finishSplash();
       return;
     }
     rafId = requestAnimationFrame(tick);
   }
 
-  function finish() {
+  function finishSplash() {
     if (finished) return;
     finished = true;
     if (rafId) cancelAnimationFrame(rafId);
+
+    // Fade out audio
+    if (splashAudio && !splashAudio.paused) {
+      const fadeInterval = setInterval(() => {
+        if (splashAudio.volume > 0.05) {
+          splashAudio.volume = Math.max(0, splashAudio.volume - 0.05);
+        } else {
+          splashAudio.pause();
+          splashAudio.currentTime = 0;
+          clearInterval(fadeInterval);
+        }
+      }, 50);
+    }
 
     splashBarFill.style.width = "100%";
     splashPath.classList.add("show");
@@ -76,6 +93,7 @@ import "./style.css";
     setTimeout(() => {
       splash.classList.add("splash-hide");
       document.body.classList.remove("splash-active");
+      document.body.classList.remove("locked");
 
       setTimeout(() => {
         splash.style.display = "none";
@@ -83,27 +101,51 @@ import "./style.css";
     }, 500);
   }
 
-  setTimeout(() => splashLogo.classList.add("show"), 300);
+  // ---- START SPLASH ----
+  function startSplash() {
+    splash.classList.remove("hidden");
+    document.body.classList.add("splash-active");
 
-  splashTitleLetters.forEach((letter, i) => {
-    setTimeout(() => letter.classList.add("show"), 800 + i * 80);
+    // Play audio — akan berhasil karena dipicu oleh klik user
+    if (splashAudio) {
+      splashAudio.volume = 0.6;
+      splashAudio.play().catch((err) => {
+        console.log("Audio gagal play:", err);
+      });
+    }
+
+    // Animasi reveal
+    setTimeout(() => splashLogo.classList.add("show"), 300);
+    splashTitleLetters.forEach((letter, i) => {
+      setTimeout(() => letter.classList.add("show"), 800 + i * 80);
+    });
+    setTimeout(() => splashBarWrap.classList.add("show"), 1500);
+    setTimeout(() => splashSkip.classList.add("show"), 2000);
+
+    // Bar mulai bergerak
+    setTimeout(() => {
+      startTime = null;
+      rafId = requestAnimationFrame(tick);
+    }, 1500);
+  }
+
+  // ---- ENTRY BUTTON ----
+  entryBtn.addEventListener("click", () => {
+    entryGate.classList.add("hide");
+
+    setTimeout(() => {
+      entryGate.style.display = "none";
+      startSplash();
+    }, 500);
   });
 
-  setTimeout(() => splashBarWrap.classList.add("show"), 1500);
-
-  setTimeout(() => splashSkip.classList.add("show"), 2000);
-
+  // ---- SKIP ----
   splashSkip.addEventListener("click", () => {
     if (finished) return;
-    finish();
+    finishSplash();
   });
-
-  setTimeout(() => {
-    startTime = null;
-    rafId = requestAnimationFrame(tick);
-  }, 1500);
 })();
-// ==================== END SPLASH ====================
+// ==================== END ENTRY + SPLASH ====================
 
 
 // ==================== STATE ====================
