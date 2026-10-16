@@ -9,7 +9,13 @@ const cards = document.querySelectorAll(".vx-card");
 const cardWraps = document.querySelectorAll(".vx-card-wrap");
 const tabs = document.querySelectorAll(".vx-tab");
 
+// Type modal
+const typeModal = document.getElementById("typeModal");
+const typeOptions = document.getElementById("typeOptions");
+const typeModalSub = document.getElementById("typeModalSub");
+
 let isAnimating = false;
+let pendingCard = null;
 
 // ==================== TAB FILTER ====================
 tabs.forEach(tab => {
@@ -65,6 +71,7 @@ cards.forEach(card => {
     const wrap = card.closest(".vx-card-wrap");
     if (!wrap || wrap.classList.contains("filtered")) return;
     isAnimating = true;
+    pendingCard = card;
 
     const hole = getHoleCenter();
     const rect = wrap.getBoundingClientRect();
@@ -80,7 +87,20 @@ cards.forEach(card => {
     setTimeout(() => spawnShatter(cx, cy, 12), 350);
     setTimeout(() => spawnShatter(hole.x, hole.y, 8), 800);
     setTimeout(() => fireFlash(), 800);
-    setTimeout(() => openDownloadPage(card), 1100);
+
+    // Setelah animasi selesai: cek types
+    setTimeout(() => {
+      const typesRaw = card.dataset.types || "";
+      const types = typesRaw.split(",").map(s => s.trim()).filter(Boolean);
+
+      if (types.length <= 1) {
+        // 1 tipe (atau auto) → langsung masuk
+        openDownloadPage(card, types[0] || "auto");
+      } else {
+        // >1 tipe → tampil modal pilih format
+        showTypeModal(card, types);
+      }
+    }, 1100);
 
     setTimeout(() => {
       wrap.classList.remove("sucking");
@@ -88,6 +108,52 @@ cards.forEach(card => {
       isAnimating = false;
     }, 1800);
   });
+});
+
+// ==================== TYPE MODAL ====================
+function showTypeModal(card, types) {
+  const label = card.dataset.label || "Platform";
+  typeModalSub.textContent = `Pilih format untuk ${label}`;
+
+  const meta = {
+    video: { icon: "🎬", label: "Video", desc: "MP4 — kualitas HD" },
+    audio: { icon: "🎵", label: "Audio", desc: "MP3 — audio saja" },
+    auto:  { icon: "⚡", label: "Auto",  desc: "Deteksi otomatis" },
+  };
+
+  typeOptions.innerHTML = types.map(t => {
+    const m = meta[t] || { icon: "📁", label: t, desc: "" };
+    return `
+      <button class="type-option" data-type="${t}">
+        <div class="type-icon">${m.icon}</div>
+        <div class="type-text">
+          <div class="type-label">${m.label}</div>
+          <div class="type-desc">${m.desc}</div>
+        </div>
+        <svg class="type-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    `;
+  }).join("");
+
+  typeOptions.querySelectorAll(".type-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      closeTypeModal();
+      openDownloadPage(card, btn.dataset.type);
+    });
+  });
+
+  typeModal.classList.add("open");
+}
+
+function closeTypeModal() {
+  typeModal.classList.remove("open");
+}
+
+typeModal.addEventListener("click", (e) => {
+  if (e.target === typeModal) closeTypeModal();
 });
 
 // ==================== DOWNLOAD PAGE ====================
@@ -100,12 +166,18 @@ const dlBack = document.getElementById("dlBack");
 const dlResult = document.getElementById("dlResult");
 
 let currentPlatform = null;
+let currentType = null;
 
-function openDownloadPage(card) {
-  dlIcon.innerHTML = card.querySelector(".vx-card-icon svg").outerHTML;
-  dlName.textContent = card.dataset.label || "Platform";
-  dlTag.textContent = card.dataset.tag || "";
+function openDownloadPage(card, type) {
   currentPlatform = card.dataset.platform;
+  currentType = type;
+
+  const label = card.dataset.label || "Platform";
+  const typeLabel = type === "video" ? "Video" : type === "audio" ? "Audio" : "Auto";
+
+  dlIcon.innerHTML = card.querySelector(".vx-card-icon svg").outerHTML;
+  dlName.textContent = label;
+  dlTag.textContent = typeLabel;
 
   dlInput.value = "";
   dlSubmit.disabled = true;
@@ -153,7 +225,12 @@ dlSubmit.addEventListener("click", async () => {
     const res = await fetch("/api/download", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, format: "mp4", resolusi: "720" }),
+      body: JSON.stringify({
+        url,
+        type: currentType === "auto" ? "" : currentType,
+        format: currentType === "audio" ? "mp3" : "mp4",
+        resolusi: "720",
+      }),
     });
 
     const data = await res.json();
@@ -195,7 +272,6 @@ function buildMediaCard(item, idx) {
   const card = document.createElement("div");
   card.className = "media-card";
 
-  // Preview
   const preview = document.createElement("div");
   preview.className = "preview-wrap";
 
@@ -238,7 +314,6 @@ function buildMediaCard(item, idx) {
 
   card.appendChild(preview);
 
-  // Info + Button
   const info = document.createElement("div");
   info.className = "media-info";
 
@@ -274,7 +349,6 @@ function buildMediaCard(item, idx) {
 
   card.appendChild(info);
 
-  // Download handler
   btn.addEventListener("click", () => {
     if (!item.url) return;
     const filename = buildFilename(item);
