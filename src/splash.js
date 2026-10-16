@@ -2,8 +2,6 @@ import { VORTEX_SPLASH_MUSIC } from "./playlist.js";
 
 const SPLASH_DURATION = 5000;
 
-const entryGate = document.getElementById("entryGate");
-const entryBtn = document.getElementById("entryBtn");
 const splashScreen = document.getElementById("splashScreen");
 const splashAudio = document.getElementById("splashAudio");
 const splashLogo = document.getElementById("splashLogo");
@@ -74,10 +72,8 @@ function finishSplash() {
   }, 400);
 }
 
-entryBtn.addEventListener("click", () => {
-  entryGate.classList.add("hide");
-  setTimeout(() => {
-    entryGate.style.display = "none";
-    startSplash();
-  }, 500);
-});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startSplash);
+} else {
+  startSplash();
+}
