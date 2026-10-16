@@ -605,6 +605,35 @@ body.locked { overflow: hidden; }
   object-fit: contain; display: block;
 }
 
+/* Audio preview */
+.preview-wrap.audio {
+  background: #0d0d0d;
+  padding: 24px;
+  min-height: 130px;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.preview-wrap.audio .audio-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 22px;
+}
+
+.preview-wrap.audio audio {
+  width: 100%;
+  max-width: 500px;
+  height: 40px;
+  filter: grayscale(1) contrast(1.1);
+}
+
 .media-info {
   padding: 16px 18px;
   display: flex; flex-direction: column; gap: 12px;
@@ -633,6 +662,20 @@ body.locked { overflow: hidden; }
 .dl-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 26px -8px rgba(255,255,255,0.3);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ==================== MUSIC FAB ==================== */
