@@ -9,24 +9,23 @@ const cards = document.querySelectorAll(".vx-card");
 const cardWraps = document.querySelectorAll(".vx-card-wrap");
 const tabs = document.querySelectorAll(".vx-tab");
 
-// Type modal
 const typeModal = document.getElementById("typeModal");
 const typeOptions = document.getElementById("typeOptions");
 const typeModalSub = document.getElementById("typeModalSub");
 
 let isAnimating = false;
-let pendingCard = null;
+let activeFilter = "all";
 
 // ==================== TAB FILTER ====================
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
     if (isAnimating) return;
-    const filter = tab.dataset.filter;
+    activeFilter = tab.dataset.filter;
     tabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
     cardWraps.forEach(wrap => {
       const cats = (wrap.dataset.category || "").split(" ");
-      const match = filter === "all" || cats.includes(filter);
+      const match = activeFilter === "all" || cats.includes(activeFilter);
       wrap.classList.toggle("filtered", !match);
     });
   });
@@ -71,7 +70,6 @@ cards.forEach(card => {
     const wrap = card.closest(".vx-card-wrap");
     if (!wrap || wrap.classList.contains("filtered")) return;
     isAnimating = true;
-    pendingCard = card;
 
     const hole = getHoleCenter();
     const rect = wrap.getBoundingClientRect();
@@ -88,17 +86,23 @@ cards.forEach(card => {
     setTimeout(() => spawnShatter(hole.x, hole.y, 8), 800);
     setTimeout(() => fireFlash(), 800);
 
-    // Setelah animasi selesai: cek types
+    // Setelah animasi: cek tab aktif
     setTimeout(() => {
       const typesRaw = card.dataset.types || "";
       const types = typesRaw.split(",").map(s => s.trim()).filter(Boolean);
 
-      if (types.length <= 1) {
-        // 1 tipe (atau auto) → langsung masuk
-        openDownloadPage(card, types[0] || "auto");
-      } else {
-        // >1 tipe → tampil modal pilih format
+      if (activeFilter === "video") {
+        // Tab Video → langsung video
+        openDownloadPage(card, "video");
+      } else if (activeFilter === "audio") {
+        // Tab Audio → langsung audio
+        openDownloadPage(card, "audio");
+      } else if (types.length > 1) {
+        // Tab Semua + multi tipe → tampil modal
         showTypeModal(card, types);
+      } else {
+        // Tab Semua + 1 tipe → langsung
+        openDownloadPage(card, types[0] || "auto");
       }
     }, 1100);
 
@@ -111,18 +115,33 @@ cards.forEach(card => {
 });
 
 // ==================== TYPE MODAL ====================
+const ICON_VIDEO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+  <polygon points="23 7 16 12 23 17 23 7"/>
+  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+</svg>`;
+
+const ICON_AUDIO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+  <path d="M9 18V5l12-2v13"/>
+  <circle cx="6" cy="18" r="3"/>
+  <circle cx="18" cy="16" r="3"/>
+</svg>`;
+
+const ICON_AUTO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+</svg>`;
+
+const TYPE_META = {
+  video: { icon: ICON_VIDEO, label: "Video", desc: "MP4 - kualitas HD" },
+  audio: { icon: ICON_AUDIO, label: "Audio", desc: "MP3 - audio saja" },
+  auto:  { icon: ICON_AUTO,  label: "Auto",  desc: "Deteksi otomatis" },
+};
+
 function showTypeModal(card, types) {
   const label = card.dataset.label || "Platform";
   typeModalSub.textContent = `Pilih format untuk ${label}`;
 
-  const meta = {
-    video: { icon: "🎬", label: "Video", desc: "MP4 — kualitas HD" },
-    audio: { icon: "🎵", label: "Audio", desc: "MP3 — audio saja" },
-    auto:  { icon: "⚡", label: "Auto",  desc: "Deteksi otomatis" },
-  };
-
   typeOptions.innerHTML = types.map(t => {
-    const m = meta[t] || { icon: "📁", label: t, desc: "" };
+    const m = TYPE_META[t] || { icon: ICON_AUTO, label: t, desc: "" };
     return `
       <button class="type-option" data-type="${t}">
         <div class="type-icon">${m.icon}</div>
@@ -205,7 +224,7 @@ dlInput.addEventListener("input", () => {
   dlSubmit.disabled = !dlInput.value.trim();
 });
 
-// ==================== SUBMIT — CALL API ====================
+// ==================== SUBMIT ====================
 dlSubmit.addEventListener("click", async () => {
   const url = dlInput.value.trim();
   if (!url) return;
@@ -296,7 +315,7 @@ function buildMediaCard(item, idx) {
     preview.classList.add("audio");
     const audioIcon = document.createElement("div");
     audioIcon.className = "audio-icon";
-    audioIcon.textContent = "♪";
+    audioIcon.innerHTML = ICON_AUDIO;
     preview.appendChild(audioIcon);
 
     const a = document.createElement("audio");
