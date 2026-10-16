@@ -1,5 +1,111 @@
 import "./style.css";
 
+// ==================== SPLASH SCREEN ====================
+(function () {
+  const SPLASH_DURATION = 15000;
+  const splash = document.getElementById("splash");
+  const splashSkip = document.getElementById("splashSkip");
+  const splashLogo = document.querySelector(".splash-logo");
+  const splashTitleLetters = document.querySelectorAll(".splash-title span");
+  const splashBarWrap = document.querySelector(".splash-bar-wrap");
+  const splashBarFill = document.getElementById("splashBarFill");
+  const splashStatus = document.getElementById("splashStatus");
+  const splashPath = document.getElementById("splashPath");
+
+  if (!splash) return;
+
+  document.body.classList.add("splash-active");
+
+  let finished = false;
+  let rafId = null;
+  let startTime = null;
+
+  const STATUS_STEPS = [
+    { at: 0,  text: "Menyiapkan..." },
+    { at: 15, text: "Memuat platform..." },
+    { at: 40, text: "Menghubungkan API..." },
+    { at: 65, text: "Menyiapkan antarmuka..." },
+    { at: 85, text: "Hampir siap..." },
+    { at: 99, text: "Selesai" },
+  ];
+
+  let lastStatus = "";
+
+  function updateStatus(pct) {
+    for (let i = STATUS_STEPS.length - 1; i >= 0; i--) {
+      if (pct >= STATUS_STEPS[i].at) {
+        const txt = STATUS_STEPS[i].text;
+        if (txt !== lastStatus) {
+          lastStatus = txt;
+          splashStatus.style.opacity = "0";
+          setTimeout(() => {
+            splashStatus.textContent = txt;
+            splashStatus.style.opacity = "1";
+          }, 150);
+        }
+        break;
+      }
+    }
+  }
+
+  function tick(now) {
+    if (finished) return;
+    if (startTime === null) startTime = now;
+
+    const elapsed = now - startTime;
+    const pct = Math.min(100, (elapsed / SPLASH_DURATION) * 100);
+
+    splashBarFill.style.width = pct + "%";
+    updateStatus(pct);
+
+    if (pct >= 100) {
+      finish();
+      return;
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    if (rafId) cancelAnimationFrame(rafId);
+
+    splashBarFill.style.width = "100%";
+    splashPath.classList.add("show");
+
+    setTimeout(() => {
+      splash.classList.add("splash-hide");
+      document.body.classList.remove("splash-active");
+
+      setTimeout(() => {
+        splash.style.display = "none";
+      }, 700);
+    }, 500);
+  }
+
+  setTimeout(() => splashLogo.classList.add("show"), 300);
+
+  splashTitleLetters.forEach((letter, i) => {
+    setTimeout(() => letter.classList.add("show"), 800 + i * 80);
+  });
+
+  setTimeout(() => splashBarWrap.classList.add("show"), 1500);
+
+  setTimeout(() => splashSkip.classList.add("show"), 2000);
+
+  splashSkip.addEventListener("click", () => {
+    if (finished) return;
+    finish();
+  });
+
+  setTimeout(() => {
+    startTime = null;
+    rafId = requestAnimationFrame(tick);
+  }, 1500);
+})();
+// ==================== END SPLASH ====================
+
+
 // ==================== STATE ====================
 let platform = null;
 let format = "mp4";
@@ -60,7 +166,7 @@ async function checkStatus() {
 checkStatus();
 setInterval(checkStatus, 60_000);
 
-// ==================== STEP 1 ====================
+// ==================== STEP 1 — Pilih Platform ====================
 document.querySelectorAll(".platform-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const p = btn.dataset.platform;
