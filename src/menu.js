@@ -11,6 +11,7 @@ const tabs = document.querySelectorAll(".vx-tab");
 
 let isAnimating = false;
 
+// ==================== TAB FILTER ====================
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
     if (isAnimating) return;
@@ -25,6 +26,7 @@ tabs.forEach(tab => {
   });
 });
 
+// ==================== SUCK ANIMATION ====================
 function getHoleCenter() {
   const r = vxHole.getBoundingClientRect();
   return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
@@ -88,6 +90,7 @@ cards.forEach(card => {
   });
 });
 
+// ==================== DOWNLOAD PAGE ====================
 const dlIcon = document.getElementById("dlIcon");
 const dlName = document.getElementById("dlName");
 const dlTag = document.getElementById("dlTag");
@@ -130,6 +133,7 @@ dlInput.addEventListener("input", () => {
   dlSubmit.disabled = !dlInput.value.trim();
 });
 
+// ==================== SUBMIT — CALL API ====================
 dlSubmit.addEventListener("click", async () => {
   const url = dlInput.value.trim();
   if (!url) return;
@@ -137,34 +141,169 @@ dlSubmit.addEventListener("click", async () => {
   dlSubmit.disabled = true;
   dlSubmit.innerHTML = '<span>Memproses...</span>';
 
-  setTimeout(() => {
+  dlResult.innerHTML = `
+    <div class="media-card" style="padding: 40px; text-align: center;">
+      <div class="loading-spinner"></div>
+      <p style="margin-top: 16px; color: #8a8a8a; font-size: 13px;">
+        Mengambil data dari server...
+      </p>
+    </div>`;
+
+  try {
+    const res = await fetch("/api/download", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, format: "mp4", resolusi: "720" }),
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      dlResult.innerHTML = `
+        <div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;">
+          <strong>Gagal:</strong> ${escapeHtml(data.error || "Unknown error")}
+        </div>`;
+      return;
+    }
+
+    if (!data.items || data.items.length === 0) {
+      dlResult.innerHTML = `
+        <div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;">
+          Tidak ada media ditemukan.
+        </div>`;
+      return;
+    }
+
+    dlResult.innerHTML = "";
+    data.items.forEach((item, idx) => {
+      dlResult.appendChild(buildMediaCard(item, idx));
+    });
+  } catch (err) {
     dlResult.innerHTML = `
-      <div class="media-card">
-        <div class="preview-wrap">
-          <div style="padding: 60px 20px; text-align: center; color: #525252; font-size: 13px;">
-            Preview media akan muncul di sini<br>
-            <span style="font-size: 11px; color: #3a3a3a; margin-top: 8px; display: block;">
-              Platform: ${currentPlatform}<br>URL: ${url.slice(0, 40)}...
-            </span>
-          </div>
-        </div>
-        <div class="media-info">
-          <div class="media-head">
-            <div class="media-title">Contoh Media ${dlName.textContent}</div>
-            <button class="dl-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Unduh
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
+      <div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;">
+        <strong>Error:</strong> ${escapeHtml(err.message)}
+      </div>`;
+  } finally {
     dlSubmit.disabled = false;
     dlSubmit.innerHTML = `<span>Ambil Media</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
-  }, 1500);
+  }
 });
+
+// ==================== BUILD MEDIA CARD ====================
+function buildMediaCard(item, idx) {
+  const card = document.createElement("div");
+  card.className = "media-card";
+
+  // Preview
+  const preview = document.createElement("div");
+  preview.className = "preview-wrap";
+
+  if (item.type === "video" && item.url) {
+    const v = document.createElement("video");
+    v.src = item.url;
+    v.controls = true;
+    v.preload = "metadata";
+    v.playsInline = true;
+    if (item.thumbnail) v.poster = item.thumbnail;
+    v.addEventListener("error", () => {
+      if (item.thumbnail) {
+        preview.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = item.thumbnail;
+        img.alt = "Thumbnail";
+        preview.appendChild(img);
+      }
+    });
+    preview.appendChild(v);
+  } else if (item.type === "audio" && item.url) {
+    preview.classList.add("audio");
+    const audioIcon = document.createElement("div");
+    audioIcon.className = "audio-icon";
+    audioIcon.textContent = "♪";
+    preview.appendChild(audioIcon);
+
+    const a = document.createElement("audio");
+    a.src = item.url;
+    a.controls = true;
+    a.preload = "metadata";
+    preview.appendChild(a);
+  } else if (item.type === "image" && (item.url || item.thumbnail)) {
+    const img = document.createElement("img");
+    img.src = item.url || item.thumbnail;
+    img.alt = item.title || "Media";
+    img.loading = "lazy";
+    preview.appendChild(img);
+  }
+
+  card.appendChild(preview);
+
+  // Info + Button
+  const info = document.createElement("div");
+  info.className = "media-info";
+
+  const head = document.createElement("div");
+  head.className = "media-head";
+
+  const title = document.createElement("div");
+  title.className = "media-title";
+  title.textContent = item.title || `Media ${idx + 1}`;
+  head.appendChild(title);
+
+  const btn = document.createElement("button");
+  btn.className = "dl-btn";
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Unduh`;
+  head.appendChild(btn);
+
+  info.appendChild(head);
+
+  if (item.author || item.quality) {
+    const meta = document.createElement("div");
+    meta.style.fontSize = "11px";
+    meta.style.color = "#8a8a8a";
+    meta.style.marginTop = "4px";
+    meta.textContent = [item.author, item.quality].filter(Boolean).join(" · ");
+    info.appendChild(meta);
+  }
+
+  card.appendChild(info);
+
+  // Download handler
+  btn.addEventListener("click", () => {
+    if (!item.url) return;
+    const filename = buildFilename(item);
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(item.url)}&filename=${encodeURIComponent(filename)}`;
+    window.open(proxyUrl, "_blank");
+  });
+
+  return card;
+}
+
+// ==================== HELPERS ====================
+function buildFilename(item) {
+  const base = (item.title || "vortex-media")
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .slice(0, 60) || "vortex-media";
+
+  const ext =
+    item.type === "audio" ? "mp3" :
+    item.type === "video" ? "mp4" :
+    item.type === "image" ? "jpg" : "bin";
+
+  return `${base}.${ext}`;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
