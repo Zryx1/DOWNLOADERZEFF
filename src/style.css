@@ -26,8 +26,124 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body.locked {
+  overflow: hidden;
+  padding-top: 0;
+}
+
 body.splash-active {
   overflow: hidden;
+}
+
+/* ==================== ENTRY GATE ==================== */
+.entry-gate {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.entry-gate.hide {
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+}
+
+.entry-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+}
+
+.entry-logo {
+  width: 72px;
+  height: 72px;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+              0 20px 60px -15px rgba(255, 255, 255, 0.2);
+  animation: logoFloat 4s ease-in-out infinite;
+}
+
+.entry-logo svg { width: 32px; height: 32px; }
+
+.entry-title {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  background: linear-gradient(180deg, #ffffff 0%, #a3a3a3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-left: 0.3em;
+  margin-bottom: 2px;
+}
+
+.entry-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.entry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 40px;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px -10px rgba(255, 255, 255, 0.2);
+}
+
+.entry-btn svg { width: 18px; height: 18px; transition: transform 0.25s; }
+
+.entry-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.08));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.entry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px -10px rgba(255, 255, 255, 0.35);
+}
+
+.entry-btn:hover::before { opacity: 1; }
+.entry-btn:hover svg { transform: scale(1.1); }
+.entry-btn:active { transform: translateY(0) scale(0.98); }
+
+.entry-hint {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
 }
 
 /* ==================== SPLASH ==================== */
@@ -57,7 +173,6 @@ body.splash-active {
   position: relative;
 }
 
-/* Logo */
 .splash-logo {
   width: 56px;
   height: 56px;
@@ -92,14 +207,17 @@ body.splash-active {
   }
 }
 
-/* Title */
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
 .splash-title {
   font-size: 26px;
   font-weight: 800;
   letter-spacing: 0.35em;
   color: var(--text);
   display: flex;
-  gap: 0;
   padding-left: 0.35em;
 }
 
@@ -115,7 +233,6 @@ body.splash-active {
   transform: translateY(0);
 }
 
-/* Loading bar */
 .splash-bar-wrap {
   margin-top: 8px;
   display: flex;
@@ -144,19 +261,13 @@ body.splash-active {
   border-radius: 2px;
   position: relative;
   overflow: hidden;
-  transition: width 0.2s linear;
 }
 
 .splash-bar-fill::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.5),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
   animation: splashShimmer 1.4s infinite;
 }
 
@@ -173,7 +284,6 @@ body.splash-active {
   transition: opacity 0.25s ease;
 }
 
-/* Path label */
 .splash-path {
   font-size: 10px;
   color: var(--dim);
@@ -190,7 +300,6 @@ body.splash-active {
   transform: translateY(0);
 }
 
-/* Skip button */
 .splash-skip {
   position: absolute;
   top: 24px;
@@ -253,12 +362,6 @@ body.splash-active {
   align-items: center;
   justify-content: space-between;
   z-index: 100;
-  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
 }
 
 .brand-mini {
@@ -297,7 +400,6 @@ body.splash-active {
 
 .status-dot.online {
   background: #e5e5e5;
-  box-shadow: 0 0 0 0 rgba(229, 229, 229, 0.5);
   animation: pulseDot 2s infinite;
 }
 
@@ -355,7 +457,6 @@ body.splash-active {
   align-items: center;
 }
 
-/* ==================== HEADER ==================== */
 header {
   text-align: center;
   margin-bottom: 44px;
@@ -374,11 +475,6 @@ header {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
               0 20px 60px -15px rgba(255, 255, 255, 0.15);
   animation: logoFloat 4s ease-in-out infinite;
-}
-
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
 }
 
 .logo svg { width: 28px; height: 28px; }
@@ -422,7 +518,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==================== STEP TITLE ==================== */
 .step-title {
   display: flex;
   align-items: center;
@@ -448,7 +543,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   font-weight: 700;
 }
 
-/* ==================== CATEGORY GROUP ==================== */
 .category-group {
   position: relative;
   margin-bottom: 24px;
@@ -476,7 +570,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   background: linear-gradient(90deg, var(--border), transparent);
 }
 
-/* ==================== PLATFORM GRID ==================== */
 .platform-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -557,7 +650,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   grid-column: 1 / -1;
 }
 
-/* ==================== STEP HEADER ==================== */
 .step-header {
   display: flex;
   justify-content: space-between;
@@ -602,7 +694,6 @@ header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
   letter-spacing: 0.03em;
 }
 
-/* ==================== FORM ==================== */
 label {
   display: block;
   font-size: 11px;
@@ -647,7 +738,6 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
 }
 
-/* ==================== YT OPTIONS ==================== */
 .yt-options {
   margin-top: 22px;
   padding-top: 22px;
@@ -682,7 +772,6 @@ input[type="text"]:focus {
   font-weight: 600;
 }
 
-/* ==================== SUBMIT ==================== */
 .submit {
   display: flex;
   align-items: center;
@@ -720,7 +809,6 @@ input[type="text"]:focus {
   cursor: not-allowed;
 }
 
-/* ==================== RESULT ==================== */
 .result {
   width: 100%;
   margin-top: 24px;
@@ -761,7 +849,6 @@ input[type="text"]:focus {
 
 .error strong { color: var(--text); }
 
-/* ==================== MEDIA CARD ==================== */
 .media-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -867,7 +954,6 @@ input[type="text"]:focus {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border: 1px solid transparent;
 }
 
 .tag.type-video { background: rgba(255, 255, 255, 0.08); color: var(--text); }
@@ -969,7 +1055,6 @@ input[type="text"]:focus {
   font-variant-numeric: tabular-nums;
 }
 
-/* ==================== FOOTER ==================== */
 footer {
   margin-top: 60px;
   font-size: 12px;
@@ -979,7 +1064,6 @@ footer {
 
 .grad-text { color: var(--muted); font-weight: 600; }
 
-/* ==================== WA CHANNEL ==================== */
 .wa-channel {
   display: flex;
   align-items: center;
@@ -1023,9 +1107,7 @@ footer {
   position: relative;
 }
 
-.wa-channel:hover svg {
-  transform: scale(1.1) rotate(-6deg);
-}
+.wa-channel:hover svg { transform: scale(1.1) rotate(-6deg); }
 
 .wa-text {
   display: flex;
@@ -1035,17 +1117,8 @@ footer {
   position: relative;
 }
 
-.wa-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.wa-desc {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
-}
+.wa-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.wa-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
 .wa-channel::after {
   content: "→";
@@ -1063,6 +1136,7 @@ footer {
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 560px) {
   body { padding-top: 52px; }
+  body.locked { padding-top: 0; }
   .top-bar { padding: 0 14px; height: 52px; }
   .quota-label { display: none; }
   .quota-text { font-size: 10px; }
@@ -1088,7 +1162,13 @@ footer {
   .wa-title { font-size: 13px; }
   .wa-desc { font-size: 11px; }
 
-  /* Splash responsive */
+  /* Entry */
+  .entry-title { font-size: 30px; }
+  .entry-logo { width: 60px; height: 60px; }
+  .entry-logo svg { width: 26px; height: 26px; }
+  .entry-btn { padding: 14px 32px; font-size: 14px; }
+
+  /* Splash */
   .splash-skip { top: 16px; right: 16px; padding: 6px 12px; font-size: 11px; }
   .splash-title { font-size: 22px; }
   .splash-logo { width: 48px; height: 48px; }
