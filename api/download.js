@@ -36,34 +36,32 @@ function normalize(platform, data, extra = {}) {
 
   switch (platform) {
     case "tiktok": {
-      // TikTok: pakai `data` = versi no-watermark (HD).
-      // `size_nowm_hd` & `size_nowm` sama → `data` sudah yang tertinggi.
       const items = [];
-      if (r.data) {
-        items.push({
-          type: "video",
-          url: r.data,
-          thumbnail: r.cover,
-          title: r.title,
-          author: r.author?.nickname,
-          quality: "HD",
-          isHd: true,
-        });
-      }
-      if (r.music_info?.url) {
-        items.push({
-          type: "audio",
-          url: r.music_info.url,
-          title: r.title,
-          author: r.author?.nickname,
-        });
-      }
+      if (r.data) items.push({
+        type: "video",
+        url: r.data,
+        thumbnail: r.cover,
+        title: r.title,
+        author: r.author?.nickname,
+        quality: "HD",
+      });
+      if (r.music_info?.url) items.push({
+        type: "audio",
+        url: r.music_info.url,
+        title: r.title,
+        author: r.author?.nickname,
+      });
       return items;
     }
 
     case "youtube":
       if (extra.format === "mp3") {
-        return [{ type: "audio", url: r.url, title: r.title }];
+        return [{
+          type: "audio",
+          url: r.url,
+          title: r.title,
+          author: r.author || "YouTube",
+        }];
       }
       return [{
         type: "video",
@@ -71,12 +69,11 @@ function normalize(platform, data, extra = {}) {
         title: r.title,
         author: r.author,
         quality: r.quality || extra.resolusi,
-        isHd: (r.quality || extra.resolusi) === "1080" || (r.quality || "").includes("1080"),
       }];
 
     case "instagram": {
       const items = Array.isArray(r) ? r : [r];
-      return items.map((item) => ({
+      return items.map(item => ({
         type: item.type === "video" ? "video" : "image",
         url: item.url,
         thumbnail: item.thumbnail,
@@ -84,35 +81,10 @@ function normalize(platform, data, extra = {}) {
     }
 
     case "facebook": {
-      // Facebook: prioritaskan HD, tampilkan SD sebagai opsi kedua.
       const items = [];
-      if (r.video_hd) {
-        items.push({
-          type: "video",
-          url: r.video_hd,
-          title: r.title || "Facebook Video",
-          quality: "HD",
-          author: "Facebook",
-          isHd: true,
-        });
-      }
-      if (r.video_sd) {
-        items.push({
-          type: "video",
-          url: r.video_sd,
-          title: r.title || "Facebook Video",
-          quality: "SD",
-          author: "Facebook",
-        });
-      }
-      if (r.audio) {
-        items.push({
-          type: "audio",
-          url: r.audio,
-          title: r.title || "Facebook Audio",
-          author: "Facebook",
-        });
-      }
+      if (r.video_hd) items.push({ type: "video", url: r.video_hd, title: r.title, quality: "HD" });
+      if (r.video_sd) items.push({ type: "video", url: r.video_sd, title: r.title, quality: "SD" });
+      if (r.audio) items.push({ type: "audio", url: r.audio, title: r.title });
       return items;
     }
 
@@ -121,7 +93,7 @@ function normalize(platform, data, extra = {}) {
         type: "video",
         url: r.url,
         thumbnail: r.thumbnail,
-        title: r.title || "CapCut Video",
+        title: r.title,
         author: r.author?.name,
       }];
 
