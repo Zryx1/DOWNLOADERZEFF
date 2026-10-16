@@ -1,7 +1,6 @@
 /* ==================== RESET ==================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ==================== HAPUS TAP HIGHLIGHT ==================== */
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -9,27 +8,18 @@
 
 button, a, input, [role="button"] {
   -webkit-tap-highlight-color: transparent;
-  -webkit-tap-highlight: transparent;
   outline: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
 }
 
-button:focus,
-button:focus-visible,
-a:focus,
-input:focus,
-button:active,
-a:active {
+button:focus, button:focus-visible,
+a:focus, input:focus,
+button:active, a:active {
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: none;
-}
-
-input:focus,
-input:focus-visible {
-  outline: none;
 }
 
 :root {
@@ -52,72 +42,6 @@ body {
 }
 
 body.locked { overflow: hidden; }
-
-/* ==================== ENTRY GATE ==================== */
-.entry-gate {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 10000;
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.entry-gate.hide { opacity: 0; transform: scale(0.98); pointer-events: none; }
-
-.entry-content {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 20px; text-align: center; padding: 24px;
-}
-
-.entry-logo {
-  width: 72px; height: 72px;
-  background: var(--text); color: var(--bg);
-  border-radius: 20px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 8px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px -15px rgba(255,255,255,0.2);
-  animation: logoFloat 4s ease-in-out infinite;
-}
-.entry-logo svg { width: 32px; height: 32px; }
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.entry-title {
-  font-size: 38px; font-weight: 800;
-  letter-spacing: 0.3em; padding-left: 0.3em;
-  background: linear-gradient(180deg, #fff, #a3a3a3);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 2px;
-}
-
-.entry-subtitle {
-  font-size: 13px; color: var(--muted);
-  letter-spacing: 0.05em; margin-bottom: 24px;
-}
-
-.entry-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 16px 42px;
-  background: var(--text); color: var(--bg);
-  border: none; border-radius: 14px;
-  font-size: 15px; font-weight: 700;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: inherit;
-  box-shadow: 0 12px 40px -10px rgba(255,255,255,0.2);
-}
-.entry-btn svg { width: 18px; height: 18px; transition: transform 0.25s; }
-.entry-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 50px -10px rgba(255,255,255,0.35); }
-.entry-btn:hover svg { transform: scale(1.1); }
-.entry-btn:active { transform: translateY(0) scale(0.98); }
-
-.entry-hint {
-  font-size: 10px; color: var(--dim);
-  letter-spacing: 0.15em; text-transform: uppercase;
-  margin-top: 8px;
-}
 
 /* ==================== SPLASH ==================== */
 .splash-screen {
@@ -214,28 +138,37 @@ body.locked { overflow: hidden; }
 /* ==================== TITLE ==================== */
 .vx-title {
   position: fixed;
-  top: 50px; left: 50%;
-  transform: translateX(-50%);
+  top: 60px;
+  left: 50%;
+  transform: translateX(calc(-50% + 100px));
   z-index: 6;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 5px; pointer-events: none; text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  text-align: center;
   transition: opacity 0.4s ease;
 }
 .vx-title.hidden-title { opacity: 0; pointer-events: none; }
 
 .vx-title-main {
   display: flex;
-  font-size: 30px; font-weight: 900;
-  letter-spacing: 0.4em; padding-left: 0.4em;
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: 0.35em;
+  padding-left: 0.35em;
   line-height: 1;
   background: linear-gradient(90deg, #6b6b6b 0%, #f5f5f5 20%, #fff 30%, #f5f5f5 40%, #6b6b6b 60%, #6b6b6b 100%);
   background-size: 200% 100%;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   animation: titleShine 4s linear infinite;
 }
 .vx-title-main span {
   display: inline-block;
-  opacity: 0; transform: translateY(-8px);
+  opacity: 0;
+  transform: translateY(-8px);
   animation: titleLetterIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .vx-title-main span:nth-child(1) { animation-delay: 0.05s; }
@@ -247,9 +180,12 @@ body.locked { overflow: hidden; }
 @keyframes titleLetterIn { to { opacity: 1; transform: translateY(0); } }
 
 .vx-title-sub {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.55em; padding-left: 0.55em;
-  text-transform: uppercase; color: #525252;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.55em;
+  padding-left: 0.55em;
+  text-transform: uppercase;
+  color: #525252;
   opacity: 0;
   animation: titleSubIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
 }
@@ -258,7 +194,8 @@ body.locked { overflow: hidden; }
 /* ==================== TAB BAR ==================== */
 .vx-tabs-wrap {
   position: fixed;
-  top: 200px; left: 50%;
+  top: 220px;
+  left: 50%;
   transform: translateX(-50%);
   z-index: 6;
   border-radius: 16px;
@@ -374,7 +311,7 @@ body.locked { overflow: hidden; }
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   width: 100%; max-width: 560px;
-  padding: 250px 48px 48px;
+  padding: 270px 48px 48px;
 }
 
 .vx-card-wrap {
@@ -739,6 +676,35 @@ body.locked { overflow: hidden; }
   100% { transform: scale(1.5); opacity: 0; }
 }
 
+/* ==================== WA FAB ==================== */
+.wa-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px -10px rgba(37, 211, 102, 0.5);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.wa-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 18px 40px -10px rgba(37, 211, 102, 0.7);
+}
+.wa-fab svg {
+  width: 26px;
+  height: 26px;
+}
+
 /* ==================== MUSIC PANEL ==================== */
 .music-panel-overlay {
   position: fixed; inset: 0;
@@ -980,22 +946,17 @@ body.locked { overflow: hidden; }
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 560px) {
-  .entry-title { font-size: 30px; }
-  .entry-logo { width: 60px; height: 60px; }
-  .entry-logo svg { width: 26px; height: 26px; }
-  .entry-btn { padding: 14px 32px; font-size: 14px; }
-
   .splash-logo { width: 56px; height: 56px; }
   .splash-logo svg { width: 24px; height: 24px; }
   .splash-title { font-size: 24px; }
   .splash-subtitle { font-size: 9px; }
   .splash-bar { width: 150px; }
 
-  .vx-title { top: 32px; }
-  .vx-title-main { font-size: 22px; letter-spacing: 0.32em; padding-left: 0.32em; }
-  .vx-title-sub { font-size: 9px; letter-spacing: 0.45em; padding-left: 0.45em; }
+  .vx-title { top: 40px; transform: translateX(calc(-50% + 20px)); }
+  .vx-title-main { font-size: 26px; letter-spacing: 0.28em; padding-left: 0.28em; }
+  .vx-title-sub { font-size: 10px; letter-spacing: 0.4em; padding-left: 0.4em; }
 
-  .vx-tabs-wrap { top: 160px; }
+  .vx-tabs-wrap { top: 190px; }
   .vx-tab { padding: 6px 12px; font-size: 11px; }
   .vx-tab-count { display: none; }
 
@@ -1011,7 +972,7 @@ body.locked { overflow: hidden; }
   .vx-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    padding: 210px 12px 60px;
+    padding: 230px 12px 60px;
   }
   .vx-card { padding: 12px 12px; gap: 10px; }
   .vx-card-icon { width: 32px; height: 32px; font-size: 14px; }
@@ -1025,5 +986,7 @@ body.locked { overflow: hidden; }
 
   .music-fab { bottom: 20px; left: 20px; width: 50px; height: 50px; }
   .music-fab svg { width: 20px; height: 20px; }
+  .wa-fab { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+  .wa-fab svg { width: 22px; height: 22px; }
   .music-panel { max-height: 85vh; }
 }
