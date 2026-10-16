@@ -9,10 +9,39 @@
   <link rel="apple-touch-icon" href="/favicon.svg">
   <meta name="theme-color" content="#0a0a0a">
 </head>
-<body>
+<body class="locked">
+
+  <!-- ==================== ENTRY GATE ==================== -->
+  <div id="entryGate" class="entry-gate">
+    <div class="entry-content">
+      <div class="entry-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </div>
+
+      <h2 class="entry-title">VORTEX</h2>
+      <p class="entry-subtitle">Multi-platform media downloader</p>
+
+      <button class="entry-btn" id="entryBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+        <span>Masuk</span>
+      </button>
+
+      <p class="entry-hint">Klik untuk masuk dengan pengalaman penuh</p>
+    </div>
+  </div>
 
   <!-- ==================== SPLASH SCREEN ==================== -->
-  <div id="splash" class="splash">
+  <div id="splash" class="splash hidden">
+    <audio id="splashAudio" src="/splash.mp3" preload="auto" loop></audio>
+
     <button class="splash-skip" id="splashSkip">
       Skip
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,7 +124,6 @@
         Pilih Platform
       </h2>
 
-      <!-- KATEGORI: MEDIA SOSIAL -->
       <div class="category-group">
         <h3 class="category-label">Media Sosial</h3>
         <div class="platform-grid">
@@ -149,7 +177,6 @@
         </div>
       </div>
 
-      <!-- KATEGORI: VIDEO & AUDIO -->
       <div class="category-group">
         <h3 class="category-label">Video & Audio</h3>
         <div class="platform-grid">
