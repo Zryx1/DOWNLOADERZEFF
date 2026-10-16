@@ -8,7 +8,6 @@ function detectPlatform(url) {
   if (u.includes("instagram.com")) return "instagram";
   if (u.includes("facebook.com") || u.includes("fb.watch") || u.includes("fb.com")) return "facebook";
   if (u.includes("capcut.com")) return "capcut";
-  if (u.includes("pinterest.") || u.includes("pin.it")) return "pinterest";
   if (u.includes("spotify.com")) return "spotify";
   return null;
 }
@@ -34,28 +33,34 @@ function normalize(platform, data, extra = {}) {
   const r = data.result;
   if (!r) throw new Error("Response kosong dari server");
 
+  const type = extra.type || "";
+
   switch (platform) {
     case "tiktok": {
       const items = [];
-      if (r.data) items.push({
-        type: "video",
-        url: r.data,
-        thumbnail: r.cover,
-        title: r.title,
-        author: r.author?.nickname,
-        quality: "HD",
-      });
-      if (r.music_info?.url) items.push({
-        type: "audio",
-        url: r.music_info.url,
-        title: r.title,
-        author: r.author?.nickname,
-      });
+      if (r.data && (type === "video" || !type)) {
+        items.push({
+          type: "video",
+          url: r.data,
+          thumbnail: r.cover,
+          title: r.title,
+          author: r.author?.nickname,
+          quality: "HD",
+        });
+      }
+      if (r.music_info?.url && (type === "audio" || !type)) {
+        items.push({
+          type: "audio",
+          url: r.music_info.url,
+          title: r.title,
+          author: r.author?.nickname,
+        });
+      }
       return items;
     }
 
-    case "youtube":
-      if (extra.format === "mp3") {
+    case "youtube": {
+      if (type === "audio" || extra.format === "mp3") {
         return [{
           type: "audio",
           url: r.url,
@@ -70,6 +75,7 @@ function normalize(platform, data, extra = {}) {
         author: r.author,
         quality: r.quality || extra.resolusi,
       }];
+    }
 
     case "instagram": {
       const items = Array.isArray(r) ? r : [r];
@@ -82,9 +88,12 @@ function normalize(platform, data, extra = {}) {
 
     case "facebook": {
       const items = [];
-      if (r.video_hd) items.push({ type: "video", url: r.video_hd, title: r.title, quality: "HD" });
-      if (r.video_sd) items.push({ type: "video", url: r.video_sd, title: r.title, quality: "SD" });
-      if (r.audio) items.push({ type: "audio", url: r.audio, title: r.title });
+      if (r.video_hd && (type === "video" || !type)) {
+        items.push({ type: "video", url: r.video_hd, title: r.title, quality: "HD" });
+      }
+      if (r.audio && (type === "audio" || !type)) {
+        items.push({ type: "audio", url: r.audio, title: r.title });
+      }
       return items;
     }
 
@@ -95,14 +104,6 @@ function normalize(platform, data, extra = {}) {
         thumbnail: r.thumbnail,
         title: r.title,
         author: r.author?.name,
-      }];
-
-    case "pinterest":
-      return [{
-        type: r.video ? "video" : "image",
-        url: r.video || r.thumbnail,
-        thumbnail: r.thumbnail,
-        title: r.title,
       }];
 
     case "spotify":
@@ -129,7 +130,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { url, format = "mp4", resolusi = "720" } = req.body || {};
+    const { url, format = "mp4", resolusi = "720", type = "" } = req.body || {};
 
     if (!url || typeof url !== "string") {
       return res.status(400).json({ ok: false, error: "URL tidak valid" });
@@ -141,18 +142,22 @@ export default async function handler(req, res) {
     }
 
     let data;
-    let extra = {};
+    let extra = { type };
 
     switch (platform) {
       case "tiktok":
         data = await fetchNexray("/downloader/tiktok", { url });
         break;
       case "youtube":
-        if (format === "mp3") {
+        if (type === "audio" || format === "mp3") {
           data = await fetchNexray("/downloader/ytmp3", { url });
+          extra.type = "audio";
+          extra.format = "mp3";
         } else {
           data = await fetchNexray("/downloader/v1/ytmp4", { url, resolusi });
-          extra = { format: "mp4", resolusi };
+          extra.type = "video";
+          extra.format = "mp4";
+          extra.resolusi = resolusi;
         }
         break;
       case "instagram":
@@ -163,9 +168,6 @@ export default async function handler(req, res) {
         break;
       case "capcut":
         data = await fetchNexray("/downloader/v1/capcut", { url });
-        break;
-      case "pinterest":
-        data = await fetchNexray("/downloader/pinterest", { url });
         break;
       case "spotify":
         data = await fetchNexray("/downloader/spotify", { url });
