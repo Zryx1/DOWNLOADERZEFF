@@ -11,7 +11,6 @@ const tabs = document.querySelectorAll(".vx-tab");
 
 let isAnimating = false;
 
-// ==================== TAB FILTER ====================
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
     if (isAnimating) return;
@@ -26,7 +25,6 @@ tabs.forEach(tab => {
   });
 });
 
-// ==================== SUCK ANIMATION ====================
 function getHoleCenter() {
   const r = vxHole.getBoundingClientRect();
   return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
@@ -90,7 +88,6 @@ cards.forEach(card => {
   });
 });
 
-// ==================== DOWNLOAD PAGE ====================
 const dlIcon = document.getElementById("dlIcon");
 const dlName = document.getElementById("dlName");
 const dlTag = document.getElementById("dlTag");
