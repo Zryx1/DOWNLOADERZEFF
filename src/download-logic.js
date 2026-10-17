@@ -4,72 +4,83 @@ const dlBack = document.getElementById("dlBack");
 const dlResult = document.getElementById("dlResult");
 
 // Tombol Back (kembali ke Blackhole Menu, BUKAN ke halaman utama)
-dlBack.addEventListener("click", () => {
-  const menuPage = document.getElementById("menuPage");
-  const downloadPage = document.getElementById("downloadPage");
-  const vxTabs = document.getElementById("vxTabs");
-  const vxTitle = document.getElementById("vxTitle");
-  
-  // Animasi keluar buat halaman download
-  downloadPage.classList.add("hidden");
-  
-  // Tampilkan menu blackhole lagi
-  menuPage.classList.remove("hidden");
-  vxTabs.classList.remove("hidden-tabs");
-  vxTitle.classList.remove("hidden-title");
-  
-  // Bersihkan form
-  dlInput.value = "";
-  dlSubmit.disabled = true;
-  dlResult.innerHTML = "";
-});
+if (dlBack) {
+  dlBack.addEventListener("click", () => {
+    const menuPage = document.getElementById("menuPage");
+    const downloadPage = document.getElementById("downloadPage");
+    const vxTabs = document.getElementById("vxTabs");
+    const vxTitle = document.getElementById("vxTitle");
 
-dlInput.addEventListener("input", () => {
-  dlSubmit.disabled = !dlInput.value.trim();
-});
+    downloadPage.classList.add("hidden");
+    menuPage.classList.remove("hidden");
+    vxTabs.classList.remove("hidden-tabs");
+    vxTitle.classList.remove("hidden-title");
 
-dlSubmit.addEventListener("click", async () => {
-  const url = dlInput.value.trim();
-  if (!url) return;
-
-  dlSubmit.disabled = true;
-  dlSubmit.innerHTML = '<span>Memproses...</span>';
-  dlResult.innerHTML = `<div class="media-card" style="padding: 40px; text-align: center;"><div class="loading-spinner"></div><p style="margin-top: 16px; color: #8a8a8a; font-size: 13px;">Mengambil data dari server...</p></div>`;
-
-  try {
-    const res = await fetch("/api/download", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url,
-        type: window.currentType === "auto" ? "" : window.currentType,
-        format: window.currentType === "audio" ? "mp3" : "mp4",
-        resolusi: "720",
-      }),
-    });
-    const data = await res.json();
-
-    if (!data.ok) {
-      dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;"><strong>Gagal:</strong> ${escapeHtml(data.error || "Unknown error")}</div>`;
-      return;
-    }
-
-    if (!data.items || data.items.length === 0) {
-      dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;">Tidak ada media ditemukan.</div>`;
-      return;
-    }
-
+    dlInput.value = "";
+    dlSubmit.disabled = true;
     dlResult.innerHTML = "";
-    data.items.forEach((item, idx) => {
-      dlResult.appendChild(buildMediaCard(item, idx));
-    });
-  } catch (err) {
-    dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;"><strong>Error:</strong> ${escapeHtml(err.message)}</div>`;
-  } finally {
-    dlSubmit.disabled = false;
-    dlSubmit.innerHTML = `<span>Ambil Media</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
-  }
-});
+
+    window.currentPlatform = null;
+    window.currentType = null;
+  });
+}
+
+if (dlInput) {
+  dlInput.addEventListener("input", () => {
+    dlSubmit.disabled = !dlInput.value.trim();
+  });
+}
+
+if (dlSubmit) {
+  dlSubmit.addEventListener("click", async () => {
+    const url = dlInput.value.trim();
+    if (!url) return;
+
+    const currentType = window.currentType || "";
+    dlSubmit.disabled = true;
+    dlSubmit.innerHTML = '<span>Memproses...</span>';
+    dlResult.innerHTML = `<div class="media-card" style="padding: 40px; text-align: center;"><div class="loading-spinner"></div><p style="margin-top: 16px; color: #8a8a8a; font-size: 13px;">Mengambil data dari server...</p></div>`;
+
+    try {
+      const res = await fetch("/api/download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url,
+          type: currentType === "auto" ? "" : currentType,
+          format: currentType === "audio" ? "mp3" : "mp4",
+          resolusi: "720",
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error (${res.status})`);
+      }
+
+      const data = await res.json();
+
+      if (!data.ok) {
+        dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;"><strong>Gagal:</strong> ${escapeHtml(data.error || "Unknown error")}</div>`;
+        return;
+      }
+
+      if (!data.items || data.items.length === 0) {
+        dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;">Tidak ada media ditemukan.</div>`;
+        return;
+      }
+
+      dlResult.innerHTML = "";
+      data.items.forEach((item, idx) => {
+        dlResult.appendChild(buildMediaCard(item, idx));
+      });
+    } catch (err) {
+      dlResult.innerHTML = `<div class="media-card" style="padding: 20px; color: #fca5a5; font-size: 13px;"><strong>Error:</strong> ${escapeHtml(err.message)}</div>`;
+    } finally {
+      dlSubmit.disabled = false;
+      dlSubmit.innerHTML = `<span>Ambil Media</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+    }
+  });
+}
 
 function buildMediaCard(item, idx) {
   const card = document.createElement("div");
@@ -95,13 +106,24 @@ function buildMediaCard(item, idx) {
     const img = document.createElement("img");
     img.src = item.url || item.thumbnail; img.loading = "lazy";
     preview.appendChild(img);
+  } else if (item.type === "file" && item.url) {
+    // ===== FILE PREVIEW =====
+    preview.classList.add("audio");
+    const fileIcon = document.createElement("div");
+    fileIcon.className = "audio-icon";
+    fileIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`;
+    preview.appendChild(fileIcon);
+    const meta = document.createElement("div");
+    meta.style.cssText = "font-size: 12px; color: #8a8a8a; text-align: center; word-break: break-all; padding: 0 12px;";
+    meta.textContent = [item.filesize, item.filename].filter(Boolean).join(" · ");
+    preview.appendChild(meta);
   }
 
   card.appendChild(preview);
   const info = document.createElement("div"); info.className = "media-info";
   const head = document.createElement("div"); head.className = "media-head";
   const title = document.createElement("div"); title.className = "media-title";
-  title.textContent = item.title || `Media ${idx + 1}`;
+  title.textContent = item.title || item.filename || `Media ${idx + 1}`;
   head.appendChild(title);
 
   const btn = document.createElement("button");
@@ -110,18 +132,25 @@ function buildMediaCard(item, idx) {
   head.appendChild(btn);
   info.appendChild(head);
 
-  if (item.author || item.quality) {
+  const metaParts = [item.author, item.quality, item.filesize].filter(Boolean);
+  if (metaParts.length) {
     const meta = document.createElement("div");
     meta.style.cssText = "font-size: 11px; color: #8a8a8a; margin-top: 4px;";
-    meta.textContent = [item.author, item.quality].filter(Boolean).join(" · ");
+    meta.textContent = metaParts.join(" · ");
     info.appendChild(meta);
   }
   card.appendChild(info);
 
   btn.addEventListener("click", () => {
     if (!item.url) return;
-    const base = (item.title || "vortex-media").replace(/[^\w\s-]/g, "").trim().slice(0, 60);
-    const ext = item.type === "audio" ? "mp3" : item.type === "video" ? "mp4" : "jpg";
+    const base = (item.title || item.filename || "vortex-media").replace(/[^\w\s-]/g, "").trim().slice(0, 60);
+    let ext = "bin";
+    if (item.type === "audio") ext = "mp3";
+    else if (item.type === "video") ext = "mp4";
+    else if (item.type === "image") ext = "jpg";
+    else if (item.type === "file" && item.filename && item.filename.includes(".")) {
+      ext = item.filename.split(".").pop();
+    }
     window.open(`/api/proxy?url=${encodeURIComponent(item.url)}&filename=${encodeURIComponent(`${base}.${ext}`)}`, "_blank");
   });
   return card;
