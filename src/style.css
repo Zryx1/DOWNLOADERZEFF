@@ -329,3 +329,68 @@ body.locked { overflow: hidden; }
   .mini-eq { display: none; }
   .mini-hint svg { width: 10px; height: 10px; }
 }
+/* ==================== FIX TOMBOL AMBIL MEDIA ==================== */
+.dl-submit {
+  width: 100%;
+  height: 52px; /* Kunci tinggi tombol */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f5f5f5;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+  padding: 0 16px; /* Jaga jarak kiri kanan */
+}
+
+.dl-submit svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* Biar icon gak melar */
+}
+
+.dl-submit:disabled {
+  background: #1a1a1a;
+  color: var(--dim);
+  cursor: not-allowed;
+}
+
+/* Fix jarak tombol back di form */
+.dl-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+/* Biar tombol home (kiri atas) gak nutupin blackhole */
+.back-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 999; /* Di atas segalanya */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(14, 14, 14, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.back-home:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+  transform: translateX(-2px);
+}
