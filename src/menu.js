@@ -70,12 +70,14 @@ function openDownload(card, type) {
 
   dlIcon.innerHTML = card.querySelector(".vx-card-icon svg").outerHTML;
   dlName.textContent = card.dataset.label || "Platform";
-  dlTag.textContent = type === "video" ? "Video" : type === "audio" ? "Audio" : "Auto";
+  dlTag.textContent = type === "video" ? "Video"
+    : type === "audio" ? "Audio"
+    : type === "file" ? "File"
+    : "Auto";
   dlInput.value = "";
   dlSubmit.disabled = true;
   dlResult.innerHTML = "";
 
-  // Save for logic
   window.currentPlatform = card.dataset.platform;
   window.currentType = type;
 
@@ -110,8 +112,9 @@ cards.forEach(card => {
     setTimeout(() => {
       const typesRaw = card.dataset.types || "";
       const types = typesRaw.split(",").map(s => s.trim()).filter(Boolean);
-      if (activeFilter === "video") openDownload(card, "video");
-      else if (activeFilter === "audio") openDownload(card, "audio");
+      if (activeFilter === "video" && types.includes("video")) openDownload(card, "video");
+      else if (activeFilter === "audio" && types.includes("audio")) openDownload(card, "audio");
+      else if (activeFilter === "file" && types.includes("file")) openDownload(card, "file");
       else if (types.length > 1) showTypeModal(card, types);
       else openDownload(card, types[0] || "auto");
     }, 1100);
@@ -128,11 +131,13 @@ cards.forEach(card => {
 const ICON_VIDEO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`;
 const ICON_AUDIO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
 const ICON_AUTO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+const ICON_FILE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`;
 
 const TYPE_META = {
   video: { icon: ICON_VIDEO, label: "Video", desc: "MP4 - kualitas HD" },
   audio: { icon: ICON_AUDIO, label: "Audio", desc: "MP3 - audio saja" },
   auto:  { icon: ICON_AUTO,  label: "Auto",  desc: "Deteksi otomatis" },
+  file:  { icon: ICON_FILE,  label: "File",  desc: "Unduh file langsung" },
 };
 
 function showTypeModal(card, types) {
