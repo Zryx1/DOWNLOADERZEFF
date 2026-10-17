@@ -6,171 +6,99 @@
   <title>Downloader — Vortex</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
-<body>
+<body class="mode-orbit">
 
-<div class="flash" id="flash"></div>
-
-<!-- BACK TO HOME -->
-<a href="/index.html" class="back-home">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-    <line x1="19" y1="12" x2="5" y2="12"/>
-    <polyline points="12 19 5 12 12 5"/>
+<!-- BLACKHOLE SPIRAL -->
+<div class="vx-hole" id="vxHole">
+  <svg viewBox="-90 -90 180 180">
+    <g fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.55" stroke-linecap="round">
+      <path class="spiral-arm" pathLength="100" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+      <path class="spiral-arm" pathLength="100" transform="rotate(60)" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+      <path class="spiral-arm" pathLength="100" transform="rotate(120)" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+      <path class="spiral-arm" pathLength="100" transform="rotate(180)" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+      <path class="spiral-arm" pathLength="100" transform="rotate(240)" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+      <path class="spiral-arm" pathLength="100" transform="rotate(300)" d="M 0 -80 A 80 80 0 0 1 80 0 A 70 70 0 0 1 0 70 A 60 60 0 0 1 -60 0 A 52 52 0 0 1 0 -52 A 45 45 0 0 1 45 0 A 39 39 0 0 1 0 39 A 34 34 0 0 1 -34 0 A 30 30 0 0 1 0 -30"/>
+    </g>
+    <circle class="pulse-ring p1" r="30"/>
+    <circle class="pulse-ring p2" r="30"/>
+    <circle class="pulse-ring p3" r="30"/>
+    <circle class="pulse-ring p4" r="30"/>
+    <circle class="photon-ring" r="26" fill="none" stroke="white" stroke-width="0.8" stroke-opacity="0.9"/>
+    <circle r="24" fill="black"/>
   </svg>
-  Home
-</a>
+</div>
 
 <!-- TITLE -->
-<div class="vx-title" id="vxTitle">
-  <div class="vx-title-main">
-    <span>V</span><span>O</span><span>R</span><span>T</span><span>E</span><span>X</span>
-  </div>
+<div class="vx-title">
+  <div class="vx-title-main">VORTEX</div>
   <div class="vx-title-sub">Downloader</div>
 </div>
 
 <!-- TABS -->
-<div class="vx-tabs-wrap" id="vxTabs">
+<div class="vx-tabs-wrap">
   <div class="vx-tabs">
-    <button class="vx-tab active" data-filter="all">Semua <span class="vx-tab-count" data-count="all">13</span></button>
-    <button class="vx-tab" data-filter="video">Video <span class="vx-tab-count" data-count="video">7</span></button>
-    <button class="vx-tab" data-filter="audio">Audio <span class="vx-tab-count" data-count="audio">5</span></button>
-    <button class="vx-tab" data-filter="file">File <span class="vx-tab-count" data-count="file">5</span></button>
+    <button class="vx-tab active" data-filter="all">Semua</button>
+    <button class="vx-tab" data-filter="video">Video</button>
+    <button class="vx-tab" data-filter="audio">Audio</button>
+    <button class="vx-tab" data-filter="file">File</button>
   </div>
 </div>
 
-<!-- MENU PAGE -->
-<div class="page" id="menuPage">
-  <div class="vx-wrap" id="vxWrap">
-    <div class="vx-hole" id="vxHole">
-      <div class="vx-ring r1"></div><div class="vx-ring r2"></div><div class="vx-ring r3"></div>
-      <div class="vx-ring r4"></div><div class="vx-ring r5"></div>
-      <div class="vx-core"></div>
+<!-- CONTENT -->
+<div class="content-area">
+  <div class="orbit-stage" id="orbitStage">
+    <div class="orbit-path orbit-path-inner"></div>
+    <div class="orbit-path orbit-path-outer"></div>
+    <div class="orbit-sun">
+      <div class="sun-ring r1"></div>
+      <div class="sun-ring r2"></div>
+      <div class="sun-ring r3"></div>
+      <div class="sun-ring r4"></div>
+      <div class="sun-ring r5"></div>
+      <div class="sun-core"></div>
     </div>
-
-    <div class="vx-grid" id="vxGrid">
-      <!-- ===== EXISTING ===== -->
-      <div class="vx-card-wrap" data-category="video audio">
-        <button class="vx-card" data-platform="tiktok" data-label="TikTok" data-types="video,audio">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></div>
-          <div><div class="vx-card-name">TikTok</div><div class="vx-card-desc">Video HD & audio</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="video">
-        <button class="vx-card" data-platform="instagram" data-label="Instagram" data-types="auto">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></div>
-          <div><div class="vx-card-name">Instagram</div><div class="vx-card-desc">Foto & video</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="video audio">
-        <button class="vx-card" data-platform="facebook" data-label="Facebook" data-types="video,audio">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-          <div><div class="vx-card-name">Facebook</div><div class="vx-card-desc">Video HD & audio</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="video audio">
-        <button class="vx-card" data-platform="youtube" data-label="YouTube" data-types="video,audio">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
-          <div><div class="vx-card-name">YouTube</div><div class="vx-card-desc">MP4 & MP3</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="video">
-        <button class="vx-card" data-platform="capcut" data-label="CapCut" data-types="video">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm-6.94 9.59a.5.5 0 0 1-.71.71L12 13.94V18a1 1 0 1 1-2 0v-4.06l-.35.36a.5.5 0 0 1-.71-.71l1.77-1.76a.5.5 0 0 1 .58-.1.5.5 0 0 1 .58.1l1.77 1.76zM7 10a1 1 0 0 1 0-2h4a1 1 0 1 1 0 2H7zm10 0a1 1 0 0 1-1 1h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1zm0 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></div>
-          <div><div class="vx-card-name">CapCut</div><div class="vx-card-desc">Video template</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="audio">
-        <button class="vx-card" data-platform="spotify" data-label="Spotify" data-types="audio">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></div>
-          <div><div class="vx-card-name">Spotify</div><div class="vx-card-desc">Audio track</div></div>
-        </button>
-      </div>
-
-      <!-- ===== NEW: FILE PLATFORMS ===== -->
-      <div class="vx-card-wrap" data-category="file">
-        <button class="vx-card" data-platform="mediafire" data-label="MediaFire" data-types="file">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></div>
-          <div><div class="vx-card-name">MediaFire</div><div class="vx-card-desc">File sharing</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="file">
-        <button class="vx-card" data-platform="sfile" data-label="SFile" data-types="file">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg></div>
-          <div><div class="vx-card-name">SFile</div><div class="vx-card-desc">File hosting</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="file">
-        <button class="vx-card" data-platform="mega" data-label="Mega" data-types="file">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 3h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg></div>
-          <div><div class="vx-card-name">Mega</div><div class="vx-card-desc">Cloud storage</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="file">
-        <button class="vx-card" data-platform="github" data-label="GitHub" data-types="file">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div>
-          <div><div class="vx-card-name">GitHub</div><div class="vx-card-desc">Repo download</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="file">
-        <button class="vx-card" data-platform="googledrive" data-label="Google Drive" data-types="file">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm1.14 0l6.56 11.5h7.43l-3.43-6-3.14-5.5H8.85zM23 15H9.86l-3.43 6h13.14l3.43-6z"/></svg></div>
-          <div><div class="vx-card-name">Google Drive</div><div class="vx-card-desc">Cloud files</div></div>
-        </button>
-      </div>
-
-      <!-- ===== NEW: VIDEO / AUDIO ===== -->
-      <div class="vx-card-wrap" data-category="video audio">
-        <button class="vx-card" data-platform="twitter" data-label="Twitter" data-types="video,audio">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></div>
-          <div><div class="vx-card-name">Twitter</div><div class="vx-card-desc">Video & audio</div></div>
-        </button>
-      </div>
-      <div class="vx-card-wrap" data-category="video">
-        <button class="vx-card" data-platform="videy" data-label="Videy" data-types="video">
-          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></div>
-          <div><div class="vx-card-name">Videy</div><div class="vx-card-desc">Video hosting</div></div>
-        </button>
-      </div>
-    </div>
-    <div class="vx-hint">Klik platform untuk memilih</div>
+    <div class="orbit-ring inner" id="innerRing"></div>
+    <div class="orbit-ring outer" id="outerRing"></div>
   </div>
+  <div class="vx-grid" id="vxGrid"></div>
 </div>
 
-<!-- MODAL -->
-<div class="type-modal" id="typeModal">
-  <div class="type-modal-card">
-    <div class="type-modal-title">Pilih Format</div>
-    <div class="type-modal-sub" id="typeModalSub">Pilih tipe download yang kamu mau</div>
-    <div class="type-options" id="typeOptions"></div>
-  </div>
-</div>
-
-<!-- DOWNLOAD PAGE -->
-<div class="page hidden" id="downloadPage">
+<!-- DOWNLOAD VIEW -->
+<div class="download-view" id="downloadView">
   <div class="dl-container">
     <div class="dl-header">
       <button class="dl-back" id="dlBack">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       </button>
       <div class="dl-platform">
         <div class="dl-platform-icon" id="dlIcon"></div>
         <div class="dl-platform-info">
-          <div class="dl-platform-name" id="dlName">TikTok</div>
-          <div class="dl-platform-tag" id="dlTag">Video</div>
+          <div class="dl-platform-name" id="dlName">Platform</div>
+          <div class="dl-platform-tag" id="dlTag">Video Version</div>
         </div>
       </div>
     </div>
     <div class="dl-card">
       <div class="dl-label">Link Media</div>
       <div class="dl-input-wrap">
-        <svg class="dl-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <input type="text" class="dl-input" id="dlInput" placeholder="https://..." autocomplete="off" spellcheck="false">
+        <svg class="dl-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <input type="text" class="dl-input" id="dlInput" placeholder="Tempel link di sini..." autocomplete="off" spellcheck="false">
       </div>
       <button class="dl-submit" id="dlSubmit" disabled>
         <span>Ambil Media</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </div>
     <div class="dl-result" id="dlResult"></div>
+  </div>
+</div>
+
+<!-- TYPE MODAL -->
+<div class="type-modal" id="typeModal">
+  <div class="type-modal-card">
+    <div class="type-modal-title">Pilih Format</div>
+    <div class="type-modal-sub" id="typeModalSub">Pilih tipe download</div>
+    <div class="type-options" id="typeOptions"></div>
   </div>
 </div>
 
@@ -178,11 +106,10 @@
 <div class="mini-bar-wrap">
   <div class="mini-bar" id="miniBar">
     <div class="mini-icon" id="miniIcon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
     </div>
     <div class="mini-text" id="miniText">Music Menu</div>
     <div class="mini-eq" id="miniEq"><span></span><span></span><span></span></div>
-    <div class="mini-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div>
   </div>
 </div>
 
@@ -191,21 +118,31 @@
 <div class="music-panel" id="musicPanel">
   <div class="mp-handle"></div>
   <div class="mp-header">
-    <div class="mp-header-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Now Playing</div>
-    <button class="mp-close" id="mpClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="mp-header-title">Now Playing</div>
+    <button class="mp-close" id="mpClose">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
   <div class="mp-now">
-    <div class="mp-now-cover" id="mpNowCover"><span>♪</span></div>
-    <div class="mp-now-info"><div class="mp-now-title" id="mpNowTitle">Belum ada lagu</div><div class="mp-now-artist" id="mpNowArtist">Pilih dari playlist</div></div>
-  </div>
-  <div class="mp-progress">
-    <div class="mp-progress-track" id="mpProgressTrack"><div class="mp-progress-fill" id="mpProgressFill"></div></div>
-    <div class="mp-progress-info"><span id="mpCurTime">0:00</span><span id="mpDurTime">0:00</span></div>
+    <div class="mp-now-cover" id="mpNowCover">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </div>
+    <div class="mp-now-info">
+      <div class="mp-now-title" id="mpNowTitle">Belum ada lagu</div>
+      <div class="mp-now-artist" id="mpNowArtist">Pilih dari playlist</div>
+    </div>
   </div>
   <div class="mp-controls">
-    <button class="mp-ctrl" id="mpPrev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-    <button class="mp-play-btn" id="mpPlay"><svg id="mpIconPlay" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg><svg id="mpIconPause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
-    <button class="mp-ctrl" id="mpNext"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zm-11.5 6l8.5 6V6z"/></svg></button>
+    <button class="mp-ctrl" id="mpPrev">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+    </button>
+    <button class="mp-play-btn" id="mpPlay">
+      <svg id="mpIconPlay" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><polygon points="6 4 20 12 6 20"/></svg>
+      <svg id="mpIconPause" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+    <button class="mp-ctrl" id="mpNext">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M16 6h2v12h-2zm-11.5 6l8.5 6V6z"/></svg>
+    </button>
   </div>
   <div class="mp-divider"></div>
   <div class="mp-list-label">Playlist</div>
@@ -213,6 +150,7 @@
 </div>
 
 <audio id="audioEl" preload="metadata"></audio>
+
 <script type="module" src="/src/app-download.js"></script>
 </body>
 </html>
