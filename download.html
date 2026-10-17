@@ -30,9 +30,10 @@
 <!-- TABS -->
 <div class="vx-tabs-wrap" id="vxTabs">
   <div class="vx-tabs">
-    <button class="vx-tab active" data-filter="all">Semua <span class="vx-tab-count" data-count="all">6</span></button>
-    <button class="vx-tab" data-filter="video">Video <span class="vx-tab-count" data-count="video">5</span></button>
-    <button class="vx-tab" data-filter="audio">Audio <span class="vx-tab-count" data-count="audio">4</span></button>
+    <button class="vx-tab active" data-filter="all">Semua <span class="vx-tab-count" data-count="all">13</span></button>
+    <button class="vx-tab" data-filter="video">Video <span class="vx-tab-count" data-count="video">7</span></button>
+    <button class="vx-tab" data-filter="audio">Audio <span class="vx-tab-count" data-count="audio">5</span></button>
+    <button class="vx-tab" data-filter="file">File <span class="vx-tab-count" data-count="file">5</span></button>
   </div>
 </div>
 
@@ -46,6 +47,7 @@
     </div>
 
     <div class="vx-grid" id="vxGrid">
+      <!-- ===== EXISTING ===== -->
       <div class="vx-card-wrap" data-category="video audio">
         <button class="vx-card" data-platform="tiktok" data-label="TikTok" data-types="video,audio">
           <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></div>
@@ -80,6 +82,52 @@
         <button class="vx-card" data-platform="spotify" data-label="Spotify" data-types="audio">
           <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></div>
           <div><div class="vx-card-name">Spotify</div><div class="vx-card-desc">Audio track</div></div>
+        </button>
+      </div>
+
+      <!-- ===== NEW: FILE PLATFORMS ===== -->
+      <div class="vx-card-wrap" data-category="file">
+        <button class="vx-card" data-platform="mediafire" data-label="MediaFire" data-types="file">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></div>
+          <div><div class="vx-card-name">MediaFire</div><div class="vx-card-desc">File sharing</div></div>
+        </button>
+      </div>
+      <div class="vx-card-wrap" data-category="file">
+        <button class="vx-card" data-platform="sfile" data-label="SFile" data-types="file">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg></div>
+          <div><div class="vx-card-name">SFile</div><div class="vx-card-desc">File hosting</div></div>
+        </button>
+      </div>
+      <div class="vx-card-wrap" data-category="file">
+        <button class="vx-card" data-platform="mega" data-label="Mega" data-types="file">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 3h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg></div>
+          <div><div class="vx-card-name">Mega</div><div class="vx-card-desc">Cloud storage</div></div>
+        </button>
+      </div>
+      <div class="vx-card-wrap" data-category="file">
+        <button class="vx-card" data-platform="github" data-label="GitHub" data-types="file">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div>
+          <div><div class="vx-card-name">GitHub</div><div class="vx-card-desc">Repo download</div></div>
+        </button>
+      </div>
+      <div class="vx-card-wrap" data-category="file">
+        <button class="vx-card" data-platform="googledrive" data-label="Google Drive" data-types="file">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm1.14 0l6.56 11.5h7.43l-3.43-6-3.14-5.5H8.85zM23 15H9.86l-3.43 6h13.14l3.43-6z"/></svg></div>
+          <div><div class="vx-card-name">Google Drive</div><div class="vx-card-desc">Cloud files</div></div>
+        </button>
+      </div>
+
+      <!-- ===== NEW: VIDEO / AUDIO ===== -->
+      <div class="vx-card-wrap" data-category="video audio">
+        <button class="vx-card" data-platform="twitter" data-label="Twitter" data-types="video,audio">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></div>
+          <div><div class="vx-card-name">Twitter</div><div class="vx-card-desc">Video & audio</div></div>
+        </button>
+      </div>
+      <div class="vx-card-wrap" data-category="video">
+        <button class="vx-card" data-platform="videy" data-label="Videy" data-types="video">
+          <div class="vx-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></div>
+          <div><div class="vx-card-name">Videy</div><div class="vx-card-desc">Video hosting</div></div>
         </button>
       </div>
     </div>
