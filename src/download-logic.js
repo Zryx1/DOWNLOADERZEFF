@@ -1,6 +1,3 @@
-// ============================================================
-// DOM
-// ============================================================
 const downloadView = document.getElementById('downloadView');
 const dlBack  = document.getElementById('dlBack');
 const dlIcon  = document.getElementById('dlIcon');
@@ -13,9 +10,6 @@ const dlResult = document.getElementById('dlResult');
 let currentPlatformId = null;
 let currentType = null;
 
-// ============================================================
-// OPEN / CLOSE
-// ============================================================
 window.openDownloadView = function (platformId, type) {
   const platforms = window.VORTEX_PLATFORMS || [];
   const platform = platforms.find(p => p.id === platformId);
@@ -46,9 +40,6 @@ function closeDownloadView() {
 
 dlBack.addEventListener('click', closeDownloadView);
 
-// ============================================================
-// INPUT & SUBMIT
-// ============================================================
 dlInput.addEventListener('input', () => {
   dlSubmit.disabled = !dlInput.value.trim();
 });
@@ -89,9 +80,6 @@ dlSubmit.addEventListener('click', async () => {
   }
 });
 
-// ============================================================
-// RENDER RESULT
-// ============================================================
 function renderResults(items) {
   if (!items || !items.length) {
     renderError('Tidak ada media ditemukan');
