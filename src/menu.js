@@ -23,8 +23,7 @@ const TYPE_META = {
   file:  { label:'File',  desc:'Unduh file langsung', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>' },
 };
 
-const iconSVG = (path, size = 16) =>
-  `<svg viewBox="0 0 24 24" fill="currentColor" width="${size}" height="${size}"><path d="${path}"/></svg>`;
+const iconSVG = (path, size = 16) => `<svg viewBox="0 0 24 24" fill="currentColor" width="${size}" height="${size}"><path d="${path}"/></svg>`;
 
 // ============================================================
 // DOM
@@ -221,7 +220,6 @@ function showTypeModal(platform, types) {
   typeModal.classList.add('open');
 }
 
-// Close modal on outside click
 typeModal.addEventListener('click', (e) => {
   if (e.target === typeModal) {
     typeModal.classList.remove('open');
@@ -239,7 +237,6 @@ document.querySelectorAll('.vx-card').forEach(btn => {
   btn.addEventListener('click', () => handlePlatformClick(btn));
 });
 
-// Tabs
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const filter = tab.dataset.filter;
@@ -265,14 +262,10 @@ tabs.forEach(tab => {
   });
 });
 
-// ============================================================
-// EXPOSE TO download-logic.js
-// ============================================================
 window.VORTEX_PLATFORMS = PLATFORMS;
 window.VORTEX_RESTORE = restoreSuckedCard;
 window.VORTEX_ICON_SVG = iconSVG;
 
-// Escape to close modal
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && typeModal.classList.contains('open')) {
     typeModal.classList.remove('open');
