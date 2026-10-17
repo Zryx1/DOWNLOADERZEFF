@@ -3,17 +3,25 @@ const dlSubmit = document.getElementById("dlSubmit");
 const dlBack = document.getElementById("dlBack");
 const dlResult = document.getElementById("dlResult");
 
-// Reset ke menu kalau back diklik
+// Tombol Back (kembali ke Blackhole Menu, BUKAN ke halaman utama)
 dlBack.addEventListener("click", () => {
   const menuPage = document.getElementById("menuPage");
   const downloadPage = document.getElementById("downloadPage");
   const vxTabs = document.getElementById("vxTabs");
   const vxTitle = document.getElementById("vxTitle");
   
+  // Animasi keluar buat halaman download
   downloadPage.classList.add("hidden");
+  
+  // Tampilkan menu blackhole lagi
   menuPage.classList.remove("hidden");
   vxTabs.classList.remove("hidden-tabs");
   vxTitle.classList.remove("hidden-title");
+  
+  // Bersihkan form
+  dlInput.value = "";
+  dlSubmit.disabled = true;
+  dlResult.innerHTML = "";
 });
 
 dlInput.addEventListener("input", () => {
