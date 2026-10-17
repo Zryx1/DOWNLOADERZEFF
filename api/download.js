@@ -1,5 +1,5 @@
 const NEXRAY_BASE = "https://api.nexray.eu.cc";
-const TIMEOUT_MS = 50000;
+const TIMEOUT_MS = 50000; // Hobby plan Vercel max 10s
 
 function detectPlatform(url) {
   const u = url.toLowerCase();
@@ -55,7 +55,6 @@ function normalizeFile(platform, r) {
 function normalize(platform, data, extra = {}) {
   const r = data.result;
   if (!r && r !== "") throw new Error("Response kosong dari server");
-
   const type = extra.type || "";
 
   switch (platform) {
@@ -89,14 +88,12 @@ function normalize(platform, data, extra = {}) {
       return [{ type: "video", url: r.url, thumbnail: r.thumbnail, title: r.title, author: r.author?.name }];
     case "spotify":
       return [{ type: "audio", url: r.url, title: r.title, author: r.artist }];
-
     case "mediafire":
     case "sfile":
     case "mega":
     case "github":
     case "googledrive":
       return normalizeFile(platform, r);
-
     case "twitter": {
       if (!Array.isArray(r.download_url)) return [];
       return r.download_url.map(item => ({
@@ -105,15 +102,12 @@ function normalize(platform, data, extra = {}) {
         thumbnail: r.thumbnail,
         title: r.title ? r.title.slice(0, 80) : "Twitter Media",
         quality: item.name || item.resolusi || null,
-        duration: r.duration,
       }));
     }
-
     case "videy": {
       if (typeof r !== "string") return [];
       return [{ type: "video", url: r, title: "Videy Video", quality: "HD" }];
     }
-
     default:
       return [];
   }
@@ -123,11 +117,8 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
   if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
+  if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Method not allowed" });
 
   try {
     let body = req.body;
@@ -139,7 +130,6 @@ export default async function handler(req, res) {
     if (!url || typeof url !== "string") {
       return res.status(400).json({ ok: false, error: "URL tidak valid" });
     }
-
     const platform = detectPlatform(url);
     if (!platform) {
       return res.status(400).json({ ok: false, error: "Platform tidak didukung" });
@@ -175,7 +165,6 @@ export default async function handler(req, res) {
     if (!data?.status) {
       return res.status(502).json({ ok: false, error: "Gagal mengambil data dari server" });
     }
-
     const items = normalize(platform, data, extra);
     return res.status(200).json({ ok: true, platform, items });
   } catch (err) {
